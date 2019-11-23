@@ -1,0 +1,3 @@
+test:
+  yml:
+    property: "default.yml.value"
