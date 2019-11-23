@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dev.gavar.mojo</groupId>
+    <artifactId>mojo-parent</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://choosealicense.com/licenses/mit</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <modules>
+        <!-- own modules -->
+    </modules>
+
+    <properties>
+        <!-- project version -->
+        <revision>0.0.0-SNAPSHOT</revision>
+
+        <!-- configurations -->
+        <java.version>12</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- variables -->
+        <root.basedir>${basedir}</root.basedir>
+
+        <!-- versions -->
+        <commons.beanutils.version>1.9.4</commons.beanutils.version>
+        <commons.configuration.version>2.6</commons.configuration.version>
+        <commons.lang3.version>3.9</commons.lang3.version>
+        <flatten.maven.plugin.version>1.1.0</flatten.maven.plugin.version>
+        <jackson.databind.version>2.10.1</jackson.databind.version>
+        <junit.version>5.5.2</junit.version>
+        <maven.invoker.version>3.2.1</maven.invoker.version>
+        <maven.surefire.version>2.22.2</maven.surefire.version>
+        <maven.version>3.6.0</maven.version>
+        <plexus.version>2.0.0</plexus.version>
+        <snakeyaml.version>1.25</snakeyaml.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Apache Commons -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-configuration2</artifactId>
+                <version>${commons.configuration.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${commons.beanutils.version}</version>
+            </dependency>
+
+            <!-- YAML -->
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${snakeyaml.version}</version>
+            </dependency>
+
+            <!-- JSON -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.databind.version}</version>
+            </dependency>
+
+            <!-- Maven -->
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>${maven.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>${maven.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- CSV support -->
+        <dependency>
+            <groupId>com.univocity</groupId>
+            <artifactId>univocity-parsers</artifactId>
+            <version>2.8.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <!-- turn on filtering by default for ALL properties -->
+            <resource>
+                <directory>${resources}</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <excludes>
+                    <!-- exclude files having name starting with '#' -->
+                    <exclude>**/#*.*</exclude>
+                </excludes>
+            </resource>
+            <!-- include resources -->
+            <resource>
+                <directory>${resources}</directory>
+                <excludes>
+                    <!-- exclude files having name starting with '#' -->
+                    <exclude>**/#*.*</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <testResources>
+            <!-- turn on filtering by default for ALL properties -->
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.yaml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </testResource>
+            <!-- include resources -->
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
+
+        <pluginManagement>
+            <plugins>
+                <!-- configure plugin descriptor -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>${maven.version}</version>
+                </plugin>
+
+                <!-- Plexus components descriptors -->
+                <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-component-metadata</artifactId>
+                    <version>${plexus.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate-metadata</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+            </plugin>
+
+            <!-- CI friendly -->
+            <!-- https://maven.apache.org/maven-ci-friendly.html -->
+            <!-- https://blog.soebes.de/blog/2017/04/02/maven-pom-files-without-a-version-in-it/ -->
+            <!-- https://www.mojohaus.org/flatten-maven-plugin/examples/example-central-version.html -->
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten.maven.plugin.version}</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>${maven.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+</project>
