@@ -19,6 +19,7 @@
 
     <modules>
         <!-- own modules -->
+        <module>mojo-commons</module>
     </modules>
 
     <properties>
