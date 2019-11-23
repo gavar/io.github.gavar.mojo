@@ -1,0 +1,12 @@
+path, directory, fileName, stem, extension
+/home/user/file.txt, /home/user, file.txt, file, .txt
+/home\user/file.txt, /home\user, file.txt, file, .txt
+/home\user\file.txt, /home\user, file.txt, file, .txt
+/home/user/., /home/user, ., ., ""
+/home/user/, /home/user, "", "", ""
+file.txt, "", file.txt, file, .txt
+file.tar.gz, "", file.tar.gz, file.tar, .gz
+file., "", file., file, .a
+file, "", file, file, ""
+.file, "", .file, .file, ""
+.file.txt, "", .file.txt, .file, .txt
