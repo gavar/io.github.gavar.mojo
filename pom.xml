@@ -20,6 +20,7 @@
     <modules>
         <!-- own modules -->
         <module>mojo-commons</module>
+        <module>rc-maven-plugin</module>
     </modules>
 
     <properties>
