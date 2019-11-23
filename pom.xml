@@ -6,16 +6,8 @@
 
     <groupId>dev.gavar.mojo</groupId>
     <artifactId>mojo-parent</artifactId>
-    <version>${revision}</version>
+    <version>${revision}${changelist}</version>
     <packaging>pom</packaging>
-
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>https://choosealicense.com/licenses/mit</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
 
     <modules>
         <!-- own modules -->
@@ -25,15 +17,23 @@
 
     <properties>
         <!-- project version -->
-        <revision>0.0.0-SNAPSHOT</revision>
+        <revision>0.0.1</revision>
+        <changelist>-SNAPSHOT</changelist>
+
+        <!-- SCM -->
+        <scm.url>https://github.com/gavar/dev.gavar.mojo</scm.url>
+        <scm.connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</scm.connection>
+        <scm.developerConnection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</scm.developerConnection>
 
         <!-- configurations -->
         <java.version>12</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.deploy.skip>true</maven.deploy.skip>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- variables -->
+        <skipTests>false</skipTests>
         <root.basedir>${basedir}</root.basedir>
 
         <!-- versions -->
@@ -49,6 +49,46 @@
         <plexus.version>2.0.0</plexus.version>
         <snakeyaml.version>1.25</snakeyaml.version>
     </properties>
+
+    <scm>
+        <tag>HEAD</tag>
+        <url>${scm.url}</url>
+        <connection>${scm.connection}</connection>
+        <developerConnection>${scm.developerConnection}</developerConnection>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://choosealicense.com/licenses/mit</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <profiles>
+        <!-- Deployment to GitHub Packages -->
+        <profile>
+            <id>github</id>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Apache Maven Packages</name>
+                    <url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <configuration>
+                            <retryFailedDeploymentCount>3</retryFailedDeploymentCount>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -202,6 +242,58 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                </configuration>
+            </plugin>
+
+            <!-- Release Management -->
+            <!-- http://www.vineetmanohar.com/2009/10/how-to-automate-project-versioning-and-release-with-maven/ -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <arguments>-DskipTests=${skipTests}</arguments>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <completionGoals>
+                        versions:set-scm-tag@scm-tag-head
+                        incrementals:reincrementalify
+                    </completionGoals>
+                    <pushChanges>true</pushChanges>
+                    <releaseProfiles>github</releaseProfiles>
+                    <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
+                    <tagNameFormat>v/@{project.version}</tagNameFormat>
+                    <checkModificationExcludes>
+                        <checkModificationExclude>.idea/**</checkModificationExclude>
+                        <checkModificationExclude>pom.xml</checkModificationExclude>
+                        <checkModificationExclude>**/pom.xml</checkModificationExclude>
+                    </checkModificationExcludes>
+                </configuration>
+            </plugin>
+
+            <!-- Preserve ${revision}${changelist} after release-->
+            <plugin>
+                <groupId>io.jenkins.tools.incrementals</groupId>
+                <artifactId>incrementals-maven-plugin</artifactId>
+                <version>1.1</version>
+            </plugin>
+
+            <!-- reset tag after maven-release-plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>scm-tag-head</id>
+                        <goals>
+                            <goal>set-scm-tag</goal>
+                        </goals>
+                        <configuration>
+                            <generateBackupPoms>false</generateBackupPoms>
+                            <newTag>HEAD</newTag>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- CI friendly -->
@@ -235,7 +327,6 @@
                 </executions>
             </plugin>
         </plugins>
-
     </build>
 
     <reporting>

@@ -6,11 +6,15 @@
     <parent>
         <groupId>dev.gavar.mojo</groupId>
         <artifactId>mojo-parent</artifactId>
-        <version>${revision}</version>
+        <version>${revision}${changelist}</version>
     </parent>
 
     <artifactId>mojo-commons</artifactId>
     <packaging>jar</packaging>
+
+    <properties>
+        <maven.deploy.skip>false</maven.deploy.skip>
+    </properties>
 
     <dependencies>
         <!-- Maven -->
@@ -28,7 +32,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-configuration2</artifactId>
         </dependency>
-
     </dependencies>
 
 </project>
