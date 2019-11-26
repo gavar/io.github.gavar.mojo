@@ -1,5 +1,7 @@
 package dev.gavar.mojo.util;
 
+import java.util.function.IntFunction;
+
 public class GenericUtils {
     /**
      * Use default value when provided value is null.
@@ -17,5 +19,20 @@ public class GenericUtils {
             if (array != null && array.length > 0)
                 return array;
         return null;
+    }
+
+    /**
+     * Create array having a single value.
+     * @param value     - value to wrap as array.
+     * @param generator - array constructor.
+     * @return array containing a value when it's not null; otherwise an empty array.
+     */
+    public static <T> T[] arrify(T value, IntFunction<T[]> generator) {
+        if (value == null)
+            return generator.apply(0);
+
+        T[] array = generator.apply(1);
+        array[0] = value;
+        return array;
     }
 }

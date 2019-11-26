@@ -1,27 +1,20 @@
 package dev.gavar.mojo.rc;
 
-import dev.gavar.mojo.io.ConfigurableConfigurationLoader;
 import dev.gavar.mojo.util.MojoUtils;
-import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.PluginParameterExpressionEvaluator;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static dev.gavar.mojo.util.GenericUtils.valueOrDefault;
 import static dev.gavar.mojo.util.MojoUtils.findProjectsRoot;
 
 /**
@@ -89,6 +82,11 @@ public class RCPropertiesMojo extends AbstractMojo {
             PropertyFileSet.files("default", "rc/default"),
     };
 
+    @Parameter
+    protected PropertyOutputSet[] outputs = {
+            PropertyOutputSet.files("${project.build.directory}/rc.properties")
+    };
+
     /** Whether {@link #sources} should be modular by default. */
     @Parameter(defaultValue = "true")
     protected Boolean modular;
@@ -97,132 +95,36 @@ public class RCPropertiesMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        Properties properties;
+        Properties properties = collect();
+        output(properties);
+    }
+
+    public Properties collect() throws MojoExecutionException {
+        SourceProcessor processor = new SourceProcessor();
+        processor.setLog(getLog());
+        processor.setRoot(root != null ? root : findProjectsRoot(session.getAllProjects()));
+        processor.setBase(session.getCurrentProject().getBasedir().toPath());
+        processor.setModular(modular);
+        processor.setVariants(variants);
+        processor.setExtensions(extensions);
+
         try {
-            properties = this.process();
+            return processor.process(this.sources);
         } catch (Throwable cause) {
             getLog().error(cause);
-            throw new MojoExecutionException("execution error", cause);
+            throw new MojoExecutionException("error collecting properties", cause);
         }
-
-        // write to project properties
-        project.getProperties().putAll(properties);
     }
 
-    protected Properties process() throws ConfigurationException {
-        // configure
-        ConfigurableConfigurationLoader loader = new ConfigurableConfigurationLoader();
-        PropertiesVisitor visitor = new PropertiesVisitor(loader, getLog());
-        Path root = this.root != null ? this.root : findProjectsRoot(session.getAllProjects());
-        Path base = session.getCurrentProject().getBasedir().toPath();
-
-        List<Entry> items = new ArrayList<>();
-        for (PropertyFileSet source : sources) {
-            // collect items to visit
-            items.clear();
-            items = collect(items, source);
-            visitEach(base, visitor, items);
-            visitModularOnly(root, base.getParent(), visitor, items);
+    public void output(Properties properties) throws MojoExecutionException {
+        try {
+            OutputProcessor processor = new OutputProcessor();
+            processor.setSession(session);
+            processor.setEvaluator(new PluginParameterExpressionEvaluator(session, execution));
+            processor.process(properties, outputs);
+        } catch (Throwable cause) {
+            getLog().error(cause);
+            throw new MojoExecutionException("error writing properties", cause);
         }
-
-        // merge properties
-        return visitor.toProperties();
-    }
-
-    protected List<Entry> collect(List<Entry> items) {
-        for (PropertyFileSet source : sources)
-            items = collect(items, source);
-        return items;
-    }
-
-    protected List<Entry> collect(List<Entry> items, PropertyFileSet source) {
-        return collect(items, source,
-                valueOrDefault(source.variants, this.variants),
-                valueOrDefault(source.extensions, this.extensions),
-                valueOrDefault(source.modular, this.modular)
-        );
-    }
-
-    protected List<Entry> collect(List<Entry> items, PropertyFileSet source,
-                                  String[] variants, String[] extensions, Boolean modular) {
-        for (PropertyFile file : source.files)
-            items = collect(items, file,
-                    valueOrDefault(file.variants, variants),
-                    valueOrDefault(file.extensions, extensions),
-                    valueOrDefault(file.modular, modular)
-            );
-        return items;
-    }
-
-    protected List<Entry> collect(List<Entry> items, PropertyFile file,
-                                  String[] variants, String[] extensions, Boolean modular) {
-        Entry item = new Entry();
-
-        item.file = file;
-        item.variants = file.shouldTryVariants() ? variants : null;
-        item.extensions = file.shouldTryExtensions() ? extensions : null;
-        item.modular = file.isModular(modular);
-        item.warn = file.getUrl() != null || file.isAbsolute();
-
-        items.add(item);
-        return items;
-    }
-
-    private void visitEach(Path base, PropertiesVisitor visitor, List<Entry> items) throws ConfigurationException {
-        for (Entry item : items)
-            visit(item, base, visitor);
-    }
-
-    private void visitModularOnly(Path root, Path base, PropertiesVisitor visitor, List<Entry> items) throws ConfigurationException {
-        checkArgument(Files.isDirectory(root), "root should be a directory");
-        checkArgument(Files.isDirectory(base), "base should be a directory");
-
-        // visit every path until root
-        for (; base.startsWith(root); base = base.getParent())
-            for (Entry item : items) {
-                if (item.modular) {
-                    String rel = item.file.getPath();
-                    Path absolute = base.resolve(rel);
-                    visitor.visit(absolute, item.variants, item.extensions);
-                }
-            }
-    }
-
-    private void visit(Entry item, Path base, PropertiesVisitor visitor) throws ConfigurationException {
-        final URL url = item.file.getUrl();
-        final String path = item.file.getPath();
-        final boolean absolute = item.file.isAbsolute();
-
-        if (url != null) visit(url, visitor, item);
-        else if (absolute) visit(path, visitor, item);
-        else visit(base.resolve(path), visitor, item);
-    }
-
-    private void visit(String path, PropertiesVisitor visitor, Entry item) throws ConfigurationException {
-        boolean success = visitor.visit(path, item.variants, item.extensions) > 0;
-        track(path, success, item);
-    }
-
-    private void visit(Path path, PropertiesVisitor visitor, Entry item) throws ConfigurationException {
-        boolean success = visitor.visit(path, item.variants, item.extensions) > 0;
-        track(path, success, item);
-    }
-
-    private void visit(URL url, PropertiesVisitor visitor, Entry item) throws ConfigurationException {
-        boolean success = visitor.visit(url, item.variants, item.extensions) > 0;
-        track(url, success, item);
-    }
-
-    private void track(Object path, boolean ok, Entry item) {
-        if (!ok && item.warn)
-            getLog().info("[-] " + path);
-    }
-
-    private static class Entry {
-        public PropertyFile file;
-        public String[] variants;
-        public String[] extensions;
-        public boolean modular;
-        public boolean warn;
     }
 }

@@ -21,6 +21,9 @@
     </properties>
 
     <build>
+        <filters>
+            <filter>${project.build.directory}/rc.properties</filter>
+        </filters>
         <resources>
             <!-- turn on filtering by default for ALL properties -->
             <resource>
