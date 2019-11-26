@@ -80,7 +80,7 @@
             <!-- https://maven.apache.org/plugins/maven-invoker-plugin/usage.html -->
             <plugin>
                 <artifactId>maven-invoker-plugin</artifactId>
-                <version>${maven.invoker.version}</version>
+                <version>${maven-invoker.version}</version>
                 <configuration>
                     <skipInvocation>${skipTests}</skipInvocation>
                     <streamLogs>true</streamLogs>
