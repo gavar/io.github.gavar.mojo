@@ -10,5 +10,9 @@
         <module name="mojo-commons" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mojo-commons" target="12" />
+      <module name="rc-maven-plugin" target="12" />
+    </bytecodeTargetLevel>
   </component>
 </project>
