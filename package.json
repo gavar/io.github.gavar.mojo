@@ -7,6 +7,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "release": "mvn release:prepare release:perform -Dresume=false"
+    "release": "mvn release:prepare -Dresume=false"
   }
 }
