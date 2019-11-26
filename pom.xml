@@ -4,7 +4,7 @@
 
     <groupId>dev.gavar.mojo</groupId>
     <artifactId>mojo-parent</artifactId>
-    <version>0.0.1</version>
+    <version>${revision}${changelist}</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -15,7 +15,7 @@
 
     <properties>
         <!-- project version -->
-        <revision>0.0.1</revision>
+        <revision>0.0.2</revision>
         <changelist>-SNAPSHOT</changelist>
 
         <!-- SCM -->
@@ -49,7 +49,7 @@
     </properties>
 
     <scm>
-        <tag>v/0.0.1</tag>
+        <tag>HEAD</tag>
         <url>${scm.url}</url>
         <connection>${scm.connection}</connection>
         <developerConnection>${scm.developerConnection}</developerConnection>
