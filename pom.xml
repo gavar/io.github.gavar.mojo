@@ -41,11 +41,14 @@
         <flatten.maven.plugin.version>1.1.0</flatten.maven.plugin.version>
         <jackson.databind.version>2.10.1</jackson.databind.version>
         <junit.version>5.5.2</junit.version>
+        <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
         <maven.invoker.version>3.2.1</maven.invoker.version>
+        <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
         <maven.surefire.version>2.22.2</maven.surefire.version>
         <maven.version>3.6.0</maven.version>
-        <plexus.version>2.0.0</plexus.version>
+        <plexus.version>2.1.0</plexus.version>
         <snakeyaml.version>1.25</snakeyaml.version>
+        <versions.maven.plugin.version>2.7</versions.maven.plugin.version>
     </properties>
 
     <scm>
@@ -74,17 +77,6 @@
                     <url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</url>
                 </repository>
             </distributionManagement>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <configuration>
-                            <retryFailedDeploymentCount>3</retryFailedDeploymentCount>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 
@@ -231,6 +223,23 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <!-- plugin versions -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${versions.maven.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven.release.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven.enforcer.plugin.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -289,6 +298,27 @@
                         <configuration>
                             <generateBackupPoms>false</generateBackupPoms>
                             <newTag>HEAD</newTag>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Enforcer -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>${maven.version}</version>
+                                </requireMavenVersion>
+                            </rules>
                         </configuration>
                     </execution>
                 </executions>

@@ -15,6 +15,10 @@
         <maven.deploy.skip>false</maven.deploy.skip>
     </properties>
 
+    <prerequisites>
+        <maven>${maven.version}</maven>
+    </prerequisites>
+
     <dependencies>
         <!-- project modules -->
         <dependency>
