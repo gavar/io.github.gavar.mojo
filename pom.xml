@@ -273,8 +273,6 @@
                     <tagNameFormat>v/@{project.version}</tagNameFormat>
                     <checkModificationExcludes>
                         <checkModificationExclude>.idea/**</checkModificationExclude>
-                        <checkModificationExclude>pom.xml</checkModificationExclude>
-                        <checkModificationExclude>**/pom.xml</checkModificationExclude>
                     </checkModificationExcludes>
                 </configuration>
             </plugin>
