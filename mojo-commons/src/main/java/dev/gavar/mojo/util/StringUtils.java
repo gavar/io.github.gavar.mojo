@@ -21,8 +21,26 @@ public class StringUtils {
         return -1;
     }
 
+    public static boolean regionMatches(final CharSequence chars,
+                                        final CharSequence value, final int offset, final int length) {
+        return regionMatches(chars, 0, value, offset, length);
+    }
+
+    public static boolean regionMatches(final CharSequence chars,
+                                        final CharSequence value, final int offset) {
+        return regionMatches(chars, 0, value, offset, value.length());
+    }
+
+    public static boolean regionMatches(final CharSequence chars, final int from,
+                                        final CharSequence value) {
+        return regionMatches(chars, from, value, 0, value.length());
+    }
+
     public static boolean regionMatches(final CharSequence chars, final int from,
                                         final CharSequence value, final int offset, final int length) {
+        if (from + length > chars.length())
+            return false;
+
         for (int i = 0; i < length; i++)
             if (chars.charAt(from + i) != value.charAt(offset + i))
                 return false;

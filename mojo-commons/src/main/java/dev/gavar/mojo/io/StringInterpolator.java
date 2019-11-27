@@ -3,11 +3,14 @@ package dev.gavar.mojo.io;
 import org.apache.commons.configuration2.interpol.ConfigurationInterpolator;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
+import static com.google.common.base.Preconditions.checkState;
 import static dev.gavar.mojo.util.StringUtils.indexOf;
+import static dev.gavar.mojo.util.StringUtils.regionMatches;
 import static org.apache.commons.text.StringSubstitutor.*;
 
 public class StringInterpolator extends ConfigurationInterpolator {
@@ -20,15 +23,14 @@ public class StringInterpolator extends ConfigurationInterpolator {
     private static final int START_LENGTH = START.length();
     private static final int DELIMITER_LENGTH = DELIMITER.length();
 
+    private boolean interpolating;
+    private final StringBuilder sb = new StringBuilder();
+    private final Map<String, String> visits = new LinkedHashMap<>();
+    private final Map<String, String> cache = new HashMap<>();
     private final Function<String, Object> getProperty;
 
     public StringInterpolator(Function<String, Object> getProperty) {
         this.getProperty = getProperty;
-    }
-
-    private String lookup(String key, String fallback) {
-        Object value = getProperty.apply(key);
-        return Objects.toString(value, fallback);
     }
 
     @Override
@@ -44,9 +46,20 @@ public class StringInterpolator extends ConfigurationInterpolator {
 
     private String interpolate(String value, int from, int to) {
         if (from >= 0 && to > from + START_LENGTH) {
-            StringBuilder sb = new StringBuilder();
+            checkState(!interpolating, "recursive interpolation is not supported!");
+
+            sb.setLength(0);
             sb.append(value, 0, to);
-            interpolate(sb, from);
+
+            try {
+                interpolating = true;
+                interpolate(sb, from);
+            } finally {
+                cache.clear();
+                visits.clear();
+                interpolating = false;
+            }
+
             sb.append(value, to, value.length());
             value = sb.toString();
         }
@@ -55,12 +68,12 @@ public class StringInterpolator extends ConfigurationInterpolator {
 
     private void interpolate(final StringBuilder sb, int from) {
         // TODO: detect infinite loop
-        String variable, fallback;
         for (int to = sb.indexOf(END, from);
              from >= 0 && to > from;
              to = sb.indexOf(END, from)) {
 
             // parse
+            final String variable, fallback;
             int s = indexOf(sb, from + START_LENGTH, to, DELIMITER);
             if (s > 0) {
                 variable = sb.substring(from + START_LENGTH, s);
@@ -71,46 +84,55 @@ public class StringInterpolator extends ConfigurationInterpolator {
             }
 
             // resolve
-            String value = lookup(variable, fallback);
-            if (value == null || equals(variable, fallback, value))
+            String value = resolve(variable, fallback);
+
+            // fallback when resolves to self
+            if (regionMatches(sb, from, value))
                 value = fallback;
 
+            // track variable visit
+            visit(variable, value);
+
             // replace
+            final int next;
             if (value == null) {
-                from = to + END_LENGTH;
+                next = to + END_LENGTH;
             } else {
                 sb.replace(from, to + END_LENGTH, value);
-                from = sb.indexOf(START, from);
+                next = sb.indexOf(START, from);
+            }
+
+            // advance
+            if (from != next) {
+                // shorten future lookups
+                if (next >= 0)
+                    for (String visit : visits.keySet())
+                        cache.put(visit, value);
+
+                visits.clear();
+                from = next;
             }
         }
     }
 
-    private static boolean equals(String variable, String fallback, String value) {
-        return value != null
-                && isVariable(value)
-                && sizeMatches(variable, fallback, value)
-                && variableMatches(variable, value)
-                && fallbackMatches(variable.length(), fallback, value);
+    private void visit(String variable, String value) {
+        if (Objects.equals(visits.put(variable, value), value)) {
+            final String path = String.join(" -> ", visits.keySet());
+            final String text = "infinite interpolation loop: " + path + " -> " + variable;
+            throw new IllegalArgumentException(text);
+        }
+
+        // update value
+        cache.put(variable, value);
     }
 
-    private static boolean isVariable(String value) {
-        return value.startsWith(START)
-                && value.endsWith(END);
-    }
-
-    private static boolean sizeMatches(String variable, String fallback, String value) {
-        return value.length() == START_LENGTH
-                + variable.length()
-                + (fallback != null ? fallback.length() + DELIMITER_LENGTH : 0)
-                + END_LENGTH;
-    }
-
-    private static boolean variableMatches(String variable, String value) {
-        return value.regionMatches(START_LENGTH, variable, 0, variable.length());
-    }
-
-    private static boolean fallbackMatches(int from, String fallback, String value) {
-        return value.regionMatches(START_LENGTH + from, DELIMITER, 0, DELIMITER_LENGTH)
-                && value.regionMatches(START_LENGTH + from + DELIMITER_LENGTH, fallback, 0, fallback.length());
+    private String resolve(String variable, String fallback) {
+        String value = cache.get(variable);
+        if (value == null) {
+            final Object property = getProperty.apply(variable);
+            value = Objects.toString(property, fallback != null ? fallback : "");
+            cache.put(variable, value);
+        }
+        return value;
     }
 }
