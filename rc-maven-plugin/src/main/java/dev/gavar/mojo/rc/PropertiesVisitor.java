@@ -2,6 +2,7 @@ package dev.gavar.mojo.rc;
 
 import dev.gavar.mojo.io.ConfigurationLoader;
 import dev.gavar.mojo.io.PathInfo;
+import dev.gavar.mojo.io.StringInterpolator;
 import org.apache.commons.configuration2.CompositeConfiguration;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
@@ -11,7 +12,9 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static dev.gavar.mojo.util.GenericUtils.valueOrDefault;
@@ -25,20 +28,19 @@ import static org.apache.commons.configuration2.ConfigurationConverter.getProper
  */
 public class PropertiesVisitor {
 
-    static final String[] EMPTY = new String[0];
+    private static final String[] EMPTY = new String[0];
 
     private final Log log;
-    private final List<Properties> propertySources;
-    private final CompositeConfiguration configurations;
-    private final Map<String, Configuration> visits;
     private final ConfigurationLoader loader;
+    private final Map<String, Configuration> visits;
+    private final CompositeConfiguration configurations;
 
     public PropertiesVisitor(ConfigurationLoader loader, Log log) {
         this.log = log;
         this.loader = loader;
         this.visits = new HashMap<>();
-        this.propertySources = new ArrayList<>();
         this.configurations = new CompositeConfiguration();
+        this.configurations.setInterpolator(new StringInterpolator(this.configurations::getProperty));
     }
 
     public int visit(String path) throws ConfigurationException {
@@ -139,6 +141,6 @@ public class PropertiesVisitor {
      * @return {@code properties} object when not null; otherwise a newly created object.
      */
     public Properties toProperties() {
-        return getProperties(this.configurations);
+        return getProperties(configurations);
     }
 }

@@ -47,7 +47,6 @@
                 <version>@project.version@</version>
                 <executions>
                     <execution>
-                        <phase>initialize</phase>
                         <goals>
                             <goal>rc-properties</goal>
                         </goals>
