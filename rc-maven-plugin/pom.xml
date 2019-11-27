@@ -90,7 +90,6 @@
                     <localRepositoryPath>${project.build.directory}/repository</localRepositoryPath>
                     <preBuildHookScript>setup</preBuildHookScript>
                     <postBuildHookScript>verify</postBuildHookScript>
-                    <invokerTest>rc-interpolation</invokerTest>
                     <pomIncludes>
                         <pomInclude>*/pom.xml</pomInclude>
                     </pomIncludes>
