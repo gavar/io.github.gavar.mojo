@@ -15,6 +15,7 @@ import org.apache.maven.project.MavenProject;
 import java.nio.file.Path;
 import java.util.Properties;
 
+import static dev.gavar.mojo.util.GenericUtils.arrify;
 import static dev.gavar.mojo.util.MojoUtils.findProjectsRoot;
 
 /**
@@ -50,8 +51,6 @@ public class RCPropertiesMojo extends AbstractMojo {
      */
     @Parameter
     protected String[] variants = {};
-    public void setVariant(String variant) { this.variants = new String[]{variant}; }
-    public void setVariants(String[] variants) { this.variants = variants; }
 
     /**
      * List of the file extensions to consider as configuration files.
@@ -68,8 +67,6 @@ public class RCPropertiesMojo extends AbstractMojo {
             ".rc.ini",
             ".rc.properties",
     };
-    public void setExtension(String extension) { this.extensions = new String[]{extension}; }
-    public void setExtensions(String[] extensions) { this.extensions = extensions; }
 
     /**
      * List of sources defining a files to search for.
@@ -82,10 +79,20 @@ public class RCPropertiesMojo extends AbstractMojo {
             PropertyFileSet.files("default", "rc/default"),
     };
 
+    /**
+     * List of outputs where to write accumulated properties.
+     * {@code ${project.build.directory}/rc.properties} by default.
+     */
     @Parameter
-    protected PropertyOutputSet[] outputs = {
-            PropertyOutputSet.files("${project.build.directory}/rc.properties")
+    protected OutputFiles[] outputs = {
+            OutputFiles.files("${project.build.directory}/rc.properties")
     };
+
+    /** List of containers where to inject accumulated properties. */
+    @Parameter
+    protected OutputInjection[] injections = {};
+    public void setInjections(OutputInjection[] injections) { this.injections = injections; }
+    public void setInjection(OutputInjection injection) { this.injections = arrify(injection, OutputInjection[]::new); }
 
     /** Whether {@link #sources} should be modular by default. */
     @Parameter(defaultValue = "true")
@@ -121,7 +128,7 @@ public class RCPropertiesMojo extends AbstractMojo {
             OutputProcessor processor = new OutputProcessor();
             processor.setSession(session);
             processor.setEvaluator(new PluginParameterExpressionEvaluator(session, execution));
-            processor.process(properties, outputs);
+            processor.process(properties, outputs, injections);
         } catch (Throwable cause) {
             getLog().error(cause);
             throw new MojoExecutionException("error writing properties", cause);

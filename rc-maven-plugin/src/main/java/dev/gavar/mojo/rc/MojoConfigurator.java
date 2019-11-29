@@ -1,5 +1,7 @@
 package dev.gavar.mojo.rc;
 
+import dev.gavar.mojo.core.PropertySourceType;
+import dev.gavar.mojo.core.UpperEnumConverter;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurator;
@@ -12,5 +14,7 @@ public class MojoConfigurator extends BasicComponentConfigurator implements Init
     public void initialize() {
         converterLookup.registerConverter(new PropertyFile.Converter());
         converterLookup.registerConverter(new PropertyFileSet.Converter());
+        converterLookup.registerConverter(new OutputInjection.Converter());
+        converterLookup.registerConverter(new UpperEnumConverter(PropertySourceType.class));
     }
 }

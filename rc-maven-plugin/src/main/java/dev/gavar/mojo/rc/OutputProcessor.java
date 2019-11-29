@@ -1,6 +1,5 @@
 package dev.gavar.mojo.rc;
 
-import dev.gavar.mojo.core.PropertySourceType;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
@@ -25,24 +24,25 @@ public class OutputProcessor {
     private ExpressionEvaluator evaluator;
     public void setEvaluator(ExpressionEvaluator evaluator) { this.evaluator = evaluator; }
 
-    public void process(Properties source, PropertyOutputSet[] outputs) throws IOException, MojoExecutionException {
+    public void process(Properties source, OutputFiles[] outputs, OutputInjection[] injections) throws IOException, MojoExecutionException {
         checkState(session != null, "session is not set");
         checkState(evaluator != null, "evaluator is not set");
 
         // sort source
         source = sorted(source);
 
-        // process each output
-        for (PropertyOutputSet output : outputs) {
-            // sort filtered
-            Properties properties = output.filter(source);
-            properties = sorted(properties);
-
+        // process outputs
+        for (OutputFiles output : outputs) {
+            Properties properties = sorted(output.filter(source));
             for (File file : output.getFiles())
                 write(properties, evaluate(evaluator, file));
+        }
 
-            for (PropertySourceType target : output.getTargets())
-                write(properties, target.resolve(session));
+        // process injections
+        for (OutputInjection injection : injections) {
+            Properties properties = sorted(injection.filter(source));
+            for (Properties bean : injection.getBeans())
+                write(properties, bean, injection.shouldRewrite(bean));
         }
     }
 
@@ -59,8 +59,13 @@ public class OutputProcessor {
         }
     }
 
-    private void write(Properties source, Properties target) {
-        target.putAll(source);
+    private void write(Properties source, Properties target, boolean rewrite) {
+        if (rewrite) {
+            target.putAll(source);
+        } else {
+            for (Object key : source.keySet())
+                target.putIfAbsent(key, source.get(key));
+        }
     }
 
     private static class SortedProperties extends Properties {
