@@ -23,7 +23,7 @@ import static dev.gavar.mojo.util.MojoUtils.findProjectsRoot;
  * "RC" stands for "run configuration".
  */
 @Execute(phase = LifecyclePhase.INITIALIZE)
-@Mojo(name = "rc-properties", defaultPhase = LifecyclePhase.INITIALIZE)
+@Mojo(name = "properties", defaultPhase = LifecyclePhase.INITIALIZE)
 public class RCPropertiesMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)

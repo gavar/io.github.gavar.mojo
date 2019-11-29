@@ -48,7 +48,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>rc-properties</goal>
+                            <goal>properties</goal>
                         </goals>
                     </execution>
                 </executions>
