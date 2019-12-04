@@ -85,6 +85,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- project modules -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>mojo-commons</artifactId>
+                <version>${revision}${changelist}</version>
+            </dependency>
+
             <!-- Apache Commons -->
             <dependency>
                 <groupId>org.apache.commons</groupId>

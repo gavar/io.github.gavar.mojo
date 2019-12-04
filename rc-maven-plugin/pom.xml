@@ -24,7 +24,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>mojo-commons</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <!-- Maven -->
