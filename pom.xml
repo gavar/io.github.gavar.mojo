@@ -11,6 +11,7 @@
         <!-- own modules -->
         <module>mojo-commons</module>
         <module>rc-maven-plugin</module>
+        <module>jooq-liquibase-maven-plugin</module>
     </modules>
 
     <properties>
@@ -43,7 +44,9 @@
         <commons-lang3.version>3.9</commons-lang3.version>
         <flatten-maven-plugin.version>1.1.0</flatten-maven-plugin.version>
         <jackson-databind.version>2.10.1</jackson-databind.version>
+        <jooq.version>3.12.3</jooq.version>
         <junit.version>5.5.2</junit.version>
+        <liquibase.version>3.8.1</liquibase.version>
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
         <maven-invoker.version>3.2.1</maven-invoker.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
@@ -51,6 +54,7 @@
         <maven.version>3.6.0</maven.version>
         <plexus.version>2.1.0</plexus.version>
         <snakeyaml.version>1.25</snakeyaml.version>
+        <testcontainers.version>1.12.3</testcontainers.version>
         <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
     </properties>
 
@@ -136,6 +140,36 @@
                 <scope>provided</scope>
             </dependency>
 
+            <!-- Liquibase -->
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+
+            <!-- Test Containers -->
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>jdbc</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+
+            <!-- JOOQ -->
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen</artifactId>
+                <version>${jooq.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
