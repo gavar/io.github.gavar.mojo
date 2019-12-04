@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.gavar.mojo</groupId>
     <artifactId>mojo-parent</artifactId>
-    <version>${revision}${changelist}</version>
+    <version>0.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -15,9 +16,8 @@
     </modules>
 
     <properties>
-        <!-- project version -->
-        <revision>0.0.4</revision>
-        <changelist>-SNAPSHOT</changelist>
+        <!-- release -->
+        <release.tag>v/${project.artifactId}/${project.version}</release.tag>
 
         <!-- SCM -->
         <scm.url>https://github.com/gavar/dev.gavar.mojo</scm.url>
@@ -48,6 +48,7 @@
         <junit.version>5.5.2</junit.version>
         <liquibase.version>3.8.1</liquibase.version>
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
+        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-invoker.version>3.2.1</maven-invoker.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-surefire.version>2.22.2</maven-surefire.version>
@@ -90,10 +91,11 @@
     <dependencyManagement>
         <dependencies>
             <!-- project modules -->
+            <!-- versions updated by maven-release-plugin -->
             <dependency>
-                <groupId>${project.groupId}</groupId>
+                <groupId>dev.gavar.mojo</groupId>
                 <artifactId>mojo-commons</artifactId>
-                <version>${revision}${changelist}</version>
+                <version>0.0.4-SNAPSHOT</version>
             </dependency>
 
             <!-- Apache Commons -->
@@ -174,6 +176,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-release-plugin</artifactId>
+            <version>${maven-release-plugin.version}</version>
+        </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -306,16 +314,25 @@
                 <configuration>
                     <arguments>-DskipTests=${skipTests}</arguments>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <completionGoals>
-                        versions:set-scm-tag@scm-tag-head
-                        incrementals:reincrementalify
-                    </completionGoals>
-                    <pushChanges>true</pushChanges>
+                    <pushChanges>false</pushChanges>
                     <releaseProfiles>github</releaseProfiles>
+                    <remoteTagging>false</remoteTagging>
                     <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
-                    <tagNameFormat>v/@{project.version}</tagNameFormat>
+                    <!--<suppressCommitBeforeBranch>true</suppressCommitBeforeBranch>-->
+                    <!--<suppressCommitBeforeTag>true</suppressCommitBeforeTag>-->
+                    <tag>latest</tag>
+                    <preparationGoals>
+                        clean
+                        package
+                        versions:set-scm-tag@tag-release
+                    </preparationGoals>
+                    <completionGoals>
+                        verify
+                        <!--incrementals:reincrementalify-->
+                    </completionGoals>
                     <checkModificationExcludes>
                         <checkModificationExclude>.idea/**</checkModificationExclude>
+                        <checkModificationExclude>**/pom.xml</checkModificationExclude>
                     </checkModificationExcludes>
                 </configuration>
             </plugin>
@@ -333,17 +350,53 @@
                 <artifactId>versions-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>scm-tag-head</id>
+                        <id>tag-release</id>
                         <goals>
                             <goal>set-scm-tag</goal>
                         </goals>
                         <configuration>
                             <generateBackupPoms>false</generateBackupPoms>
-                            <newTag>HEAD</newTag>
+                            <newTag>${release.tag}</newTag>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${maven-exec-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>delete-latest-tag</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <commandlineArgs>-c "git tag -l latest | xargs git tag -d"</commandlineArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--<plugin>-->
+            <!--    <groupId>org.codehaus.mojo</groupId>-->
+            <!--    <artifactId>versions-maven-plugin</artifactId>-->
+            <!--    <executions>-->
+            <!--        <execution>-->
+            <!--            <id>scm-tag</id>-->
+            <!--            <goals>-->
+            <!--                <goal>set-scm-tag</goal>-->
+            <!--            </goals>-->
+            <!--            <configuration>-->
+            <!--                <generateBackupPoms>false</generateBackupPoms>-->
+            <!--                <newTag>${release.tag}</newTag>-->
+            <!--            </configuration>-->
+            <!--        </execution>-->
+            <!--    </executions>-->
+            <!--</plugin>-->
 
             <!-- Enforcer -->
             <plugin>
@@ -362,37 +415,6 @@
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- CI friendly -->
-            <!-- https://maven.apache.org/maven-ci-friendly.html -->
-            <!-- https://blog.soebes.de/blog/2017/04/02/maven-pom-files-without-a-version-in-it/ -->
-            <!-- https://www.mojohaus.org/flatten-maven-plugin/examples/example-central-version.html -->
-            <plugin>
-                <inherited>true</inherited>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>${flatten-maven-plugin.version}</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

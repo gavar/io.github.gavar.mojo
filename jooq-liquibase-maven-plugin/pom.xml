@@ -4,17 +4,24 @@
     <parent>
         <groupId>dev.gavar.mojo</groupId>
         <artifactId>mojo-parent</artifactId>
-        <version>HEAD-SNAPSHOT</version>
+        <version>0.0.0</version>
         <relativePath>..</relativePath>
     </parent>
 
     <artifactId>jooq-liquibase-maven-plugin</artifactId>
-    <packaging>maven-plugin</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
 
     <properties>
         <maven.deploy.skip>false</maven.deploy.skip>
     </properties>
+
+    <scm>
+        <tag>HEAD</tag>
+        <url>${scm.url}</url>
+        <connection>${scm.connection}</connection>
+        <developerConnection>${scm.developerConnection}</developerConnection>
+    </scm>
 
     <prerequisites>
         <maven>${maven.version}</maven>

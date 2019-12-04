@@ -4,15 +4,23 @@
     <parent>
         <groupId>dev.gavar.mojo</groupId>
         <artifactId>mojo-parent</artifactId>
-        <version>${revision}${changelist}</version>
+        <version>0.0.0</version>
     </parent>
 
     <artifactId>mojo-commons</artifactId>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
         <maven.deploy.skip>false</maven.deploy.skip>
     </properties>
+
+    <scm>
+        <tag>HEAD</tag>
+        <url>${scm.url}</url>
+        <connection>${scm.connection}</connection>
+        <developerConnection>${scm.developerConnection}</developerConnection>
+    </scm>
 
     <dependencies>
         <!-- Maven -->
