@@ -27,10 +27,12 @@ import static org.eclipse.jgit.lib.Constants.R_TAGS;
 
 public class ReleaseProject {
 
-    private final ProjectConfig config;
-    private final MavenProject mavenProject;
     private final TreeFilter treeFilter;
 
+    private final MavenProject mavenProject;
+    public MavenProject getMavenProject() { return mavenProject; }
+
+    private final ProjectConfig config;
     public ProjectConfig getConfig() { return config; }
 
     public ReleaseProject(File root, MavenProject mavenProject, ProjectConfig config) {
@@ -98,6 +100,10 @@ public class ReleaseProject {
 
     public boolean isSkipDeploy() {
         return this.config.isSkipDeploy();
+    }
+
+    public String tagNameFor(Version version) {
+        return this.config.getTagPrefix() + version.toString();
     }
 
     public ReleaseProject analyze(Git git, RevWalk walk) throws IOException {

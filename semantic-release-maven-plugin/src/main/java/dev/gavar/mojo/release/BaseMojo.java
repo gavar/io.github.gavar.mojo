@@ -16,6 +16,9 @@ import static dev.gavar.mojo.util.GenericUtils.putNonNull;
 
 public abstract class BaseMojo extends AbstractMojo {
 
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
+    protected MavenProject project;
+
     @Parameter(defaultValue = "${session}", readonly = true, required = true)
     protected MavenSession session;
 

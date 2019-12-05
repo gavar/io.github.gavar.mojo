@@ -28,7 +28,7 @@ public class AnalyzeMojo extends BaseMojo {
         }
     }
 
-    protected void process() throws IOException, InterruptedException {
+    protected void process() throws IOException {
         final Log log = getLog();
 
         log.info("Loading GIT repository: " + root);
