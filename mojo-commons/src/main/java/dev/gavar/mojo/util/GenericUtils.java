@@ -1,5 +1,6 @@
 package dev.gavar.mojo.util;
 
+import java.util.Properties;
 import java.util.function.IntFunction;
 
 public class GenericUtils {
@@ -34,5 +35,10 @@ public class GenericUtils {
         T[] array = generator.apply(1);
         array[0] = value;
         return array;
+    }
+
+    public static void putNonNull(Properties properties, Object key, Object value) {
+        if (value != null)
+            properties.put(key, value);
     }
 }

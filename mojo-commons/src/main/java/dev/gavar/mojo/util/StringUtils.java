@@ -2,6 +2,10 @@ package dev.gavar.mojo.util;
 
 public class StringUtils {
 
+    public static int lengthOf(String value) {
+        return value != null ? value.length() : 0;
+    }
+
     public static int indexOf(final CharSequence cs, final int from, final int to, final char value) {
         for (int i = from; i < to; i++)
             if (cs.charAt(i) == value)
