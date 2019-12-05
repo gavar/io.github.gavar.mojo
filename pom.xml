@@ -13,6 +13,7 @@
         <module>mojo-commons</module>
         <module>rc-maven-plugin</module>
         <module>jooq-liquibase-maven-plugin</module>
+        <module>semantic-release-maven-plugin</module>
     </modules>
 
     <properties>
@@ -44,6 +45,8 @@
         <commons-lang3.version>3.9</commons-lang3.version>
         <flatten-maven-plugin.version>1.1.0</flatten-maven-plugin.version>
         <jackson-databind.version>2.10.1</jackson-databind.version>
+        <java-semver.version>0.9.0</java-semver.version>
+        <jgit.version>5.5.1.201910021850-r</jgit.version>
         <jooq.version>3.12.3</jooq.version>
         <junit.version>5.5.2</junit.version>
         <liquibase.version>3.8.1</liquibase.version>
@@ -172,6 +175,20 @@
                 <artifactId>jooq-codegen</artifactId>
                 <version>${jooq.version}</version>
             </dependency>
+
+            <!-- SemVer -->
+            <dependency>
+                <groupId>com.github.zafarkhaja</groupId>
+                <artifactId>java-semver</artifactId>
+                <version>${java-semver.version}</version>
+            </dependency>
+
+            <!-- GIT -->
+            <dependency>
+                <groupId>org.eclipse.jgit</groupId>
+                <artifactId>org.eclipse.jgit</artifactId>
+                <version>${jgit.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -255,6 +272,14 @@
 
         <pluginManagement>
             <plugins>
+                <!-- project plugins -->
+                <!-- versions updated by maven-release-plugin -->
+                <plugin>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>semantic-release-maven-plugin</artifactId>
+                    <version>0.0.1-SNAPSHOT</version>
+                </plugin>
+
                 <!-- configure plugin descriptor -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

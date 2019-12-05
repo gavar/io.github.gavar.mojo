@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="jooq-liquibase-maven-plugin" />
         <module name="mojo-commons" />
+        <module name="semantic-release-maven-plugin" />
         <module name="rc-maven-plugin" />
       </profile>
     </annotationProcessing>
@@ -15,6 +16,7 @@
       <module name="jooq-liquibase-maven-plugin" target="12" />
       <module name="mojo-commons" target="12" />
       <module name="rc-maven-plugin" target="12" />
+      <module name="semantic-release-maven-plugin" target="12" />
     </bytecodeTargetLevel>
   </component>
 </project>

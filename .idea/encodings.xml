@@ -5,5 +5,6 @@
     <file url="file://$PROJECT_DIR$/jooq-liquibase-maven-plugin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mojo-commons" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rc-maven-plugin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/semantic-release-maven-plugin" charset="UTF-8" />
   </component>
 </project>
