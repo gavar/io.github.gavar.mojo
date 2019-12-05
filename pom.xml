@@ -9,7 +9,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!-- own modules -->
         <module>mojo-commons</module>
         <module>rc-maven-plugin</module>
         <module>jooq-liquibase-maven-plugin</module>
@@ -96,7 +95,7 @@
             <!-- project modules -->
             <!-- versions updated by maven-release-plugin -->
             <dependency>
-                <groupId>dev.gavar.mojo</groupId>
+                <groupId>${project.groupId}</groupId>
                 <artifactId>mojo-commons</artifactId>
                 <version>0.0.4-SNAPSHOT</version>
             </dependency>
