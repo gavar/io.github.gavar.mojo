@@ -19,9 +19,6 @@
 
     <scm>
         <tag>HEAD</tag>
-        <url>${scm.url}</url>
-        <connection>${scm.connection}</connection>
-        <developerConnection>${scm.developerConnection}</developerConnection>
     </scm>
 
     <prerequisites>

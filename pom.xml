@@ -16,14 +16,6 @@
     </modules>
 
     <properties>
-        <!-- release -->
-        <release.tag>v/${project.artifactId}/${project.version}</release.tag>
-
-        <!-- SCM -->
-        <scm.url>https://github.com/gavar/dev.gavar.mojo</scm.url>
-        <scm.connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</scm.connection>
-        <scm.developerConnection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</scm.developerConnection>
-
         <!-- configurations -->
         <java.version>12</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -35,8 +27,8 @@
         <maven.deploy.skip>true</maven.deploy.skip>
 
         <!-- variables -->
+        <dryRun>false</dryRun>
         <skipTests>false</skipTests>
-        <root.basedir>${basedir}</root.basedir>
 
         <!-- versions -->
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
@@ -63,9 +55,9 @@
 
     <scm>
         <tag>HEAD</tag>
-        <url>${scm.url}</url>
-        <connection>${scm.connection}</connection>
-        <developerConnection>${scm.developerConnection}</developerConnection>
+        <url>https://github.com/gavar/dev.gavar.mojo/tree/${project.scm.tag}</url>
+        <connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</connection>
+        <developerConnection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</developerConnection>
     </scm>
 
     <licenses>
@@ -336,23 +328,21 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
-                    <arguments>-DskipTests=${skipTests}</arguments>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun}</arguments>
+                    <autoVersionSubmodules>false</autoVersionSubmodules>
                     <pushChanges>false</pushChanges>
                     <releaseProfiles>github</releaseProfiles>
                     <remoteTagging>false</remoteTagging>
                     <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
-                    <!--<suppressCommitBeforeBranch>true</suppressCommitBeforeBranch>-->
-                    <!--<suppressCommitBeforeTag>true</suppressCommitBeforeTag>-->
-                    <tag>latest</tag>
+                    <tag>HEAD</tag>
                     <preparationGoals>
                         clean
                         package
-                        versions:set-scm-tag@tag-release
+                        semantic-release:release-tag
+                        versions:set-scm-tag@root-tag
                     </preparationGoals>
                     <completionGoals>
                         verify
-                        <!--incrementals:reincrementalify-->
                     </completionGoals>
                     <checkModificationExcludes>
                         <checkModificationExclude>.idea/**</checkModificationExclude>
@@ -361,26 +351,27 @@
                 </configuration>
             </plugin>
 
-            <!-- Preserve ${revision}${changelist} after release-->
+            <!-- incrementals:reincrementalify -->
+            <!-- preserve ${revision}${changelist} after release-->
             <plugin>
                 <groupId>io.jenkins.tools.incrementals</groupId>
                 <artifactId>incrementals-maven-plugin</artifactId>
                 <version>1.1</version>
             </plugin>
 
-            <!-- reset tag after maven-release-plugin -->
+            <!-- reset root tag after maven-release-plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>tag-release</id>
+                        <id>root-tag</id>
                         <goals>
                             <goal>set-scm-tag</goal>
                         </goals>
                         <configuration>
                             <generateBackupPoms>false</generateBackupPoms>
-                            <newTag>${release.tag}</newTag>
+                            <newTag>HEAD</newTag>
                         </configuration>
                     </execution>
                 </executions>
