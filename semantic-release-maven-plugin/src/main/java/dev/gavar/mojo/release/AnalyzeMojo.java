@@ -1,7 +1,6 @@
 package dev.gavar.mojo.release;
 
 import dev.gavar.mojo.io.HorizontalTable;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
@@ -19,19 +18,9 @@ import static java.lang.Boolean.TRUE;
 public class AnalyzeMojo extends BaseMojo {
 
     @Override
-    public void execute() throws MojoExecutionException {
-        try {
-            process();
-        } catch (Exception e) {
-            getLog().error(e);
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
-    }
-
     protected void process() throws IOException {
         final Log log = getLog();
 
-        log.info("Loading GIT repository: " + root);
         final Git git = openGit();
         final Repository repository = git.getRepository();
         final RevWalk walk = new RevWalk(repository);

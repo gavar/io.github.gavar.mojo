@@ -1,5 +1,6 @@
 package dev.gavar.mojo.release;
 
+import com.github.zafarkhaja.semver.Version;
 import org.apache.maven.project.MavenProject;
 
 import java.io.*;
@@ -19,11 +20,12 @@ public class ReleaseProperties {
         this.properties = properties;
     }
 
-    public void load(File file) throws IOException {
+    public void load(File file, boolean optional) throws IOException {
         try (final FileInputStream input = new FileInputStream(file)) {
             properties.load(input);
-        } catch (FileNotFoundException ignored) {
-            // ignore if file not exists
+        } catch (FileNotFoundException e) {
+            if (!optional)
+                throw e;
         }
     }
 
@@ -36,18 +38,26 @@ public class ReleaseProperties {
         }
     }
 
-    public void write(ReleaseProject release) {
-        final String key = keyOf(release.getMavenProject());
-        write("project.rel." + key, release.getNextRelVersion());
-        write("project.dev." + key, release.getNextDevVersion());
-        write("project.scm.tag" + key, release.tagNameFor(release.getNextRelVersion()));
+    public String getTag(MavenProject project) {
+        return properties.getProperty("project.scm." + keyOf(project) + ".tag");
     }
 
-    private void write(String key, Object value) {
+    public void write(ReleaseProject release) {
+        final String project = keyOf(release.getMavenProject());
+        final Version nextRelVersion = release.getNextRelVersion();
+        final Version nextDevVersion = release.getNextDevVersion();
+
+        write("project.rel." + project, nextRelVersion);
+        write("project.dev." + project, nextDevVersion);
+        write("project.scm." + project + ".tag", release.tagNameFor(nextRelVersion));
+        write("project.scm." + project + ".empty", release.isSkipDeploy());
+    }
+
+    public void write(String key, Object value) {
         write(key, Objects.toString(value, null));
     }
 
-    private void write(String key, String value) {
+    public void write(String key, String value) {
         if (value != null)
             properties.put(key, value);
     }

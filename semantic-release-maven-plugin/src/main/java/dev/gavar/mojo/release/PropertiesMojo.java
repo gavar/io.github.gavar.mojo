@@ -1,7 +1,6 @@
 package dev.gavar.mojo.release;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.jgit.api.Git;
@@ -9,7 +8,6 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevWalk;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import static java.lang.Boolean.parseBoolean;
@@ -17,48 +15,32 @@ import static java.lang.Boolean.parseBoolean;
 @Mojo(name = "properties", requiresDirectInvocation = true, aggregator = true)
 public class PropertiesMojo extends BaseMojo {
 
-    @Override
-    public void execute() throws MojoExecutionException {
-        try {
-            process();
-        } catch (Exception e) {
-            getLog().error(e);
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
-    }
-
-    protected void process() throws IOException {
-        final Log log = getLog();
+    protected void process() throws Exception {
         final Properties userProperties = session.getUserProperties();
+        final String resume = userProperties.getProperty("resume", "true");
+        if (!parseBoolean(resume))
+            throw new MojoExecutionException(String.join(" ",
+                    "there is no reason to run `semantic-release:properties` goal having -Dresume=false",
+                    "since `maven-release-plugin` will discard all release.properties modifications"
+            ));
 
-        log.info("Loading GIT repository: " + root);
         final Git git = openGit();
         final Repository repository = git.getRepository();
         final RevWalk walk = new RevWalk(repository);
 
-        final File file = new File(project.getBasedir(), "release.properties");
-        final ReleaseProperties properties = new ReleaseProperties();
-
         // load properties
-        boolean resume = bool(userProperties.getOrDefault("resume", true));
-        if (resume) properties.load(file);
+        final File basedir = project.getBasedir();
+        final ReleaseProperties properties = new ReleaseProperties();
 
         // analyze projects
         for (MavenProject project : session.getAllProjects()) {
             final ReleaseProject release = toReleaseProject(project).analyze(git, walk);
             properties.write(release.analyze(git, walk));
         }
+        properties.write("scm.tag", "");
 
         // save properties
-        properties.store(file);
-
-        // always resume release after this plugin, in order to pick up properties
-        userProperties.put("resume", true);
-    }
-
-    static boolean bool(Object value) {
-        if (value == null) return false;
-        if (value instanceof Boolean) return (Boolean) value;
-        return parseBoolean(value.toString());
+        properties.store(new File(basedir, "release.properties"));
+        properties.store(new File(basedir, "semantic.release.properties"));
     }
 }

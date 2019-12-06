@@ -86,7 +86,7 @@ public class ReleaseProject {
             final String prefix = config.getTagPrefix();
             latestRef = tagRefs.get(this.tagRefs.size() - 1);
             latestTagName = latestRef.getName().substring(R_TAGS.length());
-            lastReleaseVersion = Version.valueOf(latestTagName.substring(prefix.length() + 1));
+            lastReleaseVersion = versionOf(latestTagName.substring(prefix.length()));
         }
     }
 
@@ -139,16 +139,17 @@ public class ReleaseProject {
     }
 
     private Version resolveNextRelVersion() {
-        return isSkipDeploy() ? Version.valueOf(getVersion())
-                : tagRefs.isEmpty() ? Version.valueOf("0.0.1")
+        return isSkipDeploy() ? versionOf(getVersion())
+                : tagRefs.isEmpty() ? versionOf("0.0.1")
                 : hasChanges ? lastReleaseVersion.incrementPatchVersion()
                 : lastReleaseVersion;
     }
 
     private Version resolveNextDevVersion() {
-        return this.isSkipDeploy() || !this.isChanged()
-                ? Version.valueOf(getVersion())
-                : nextRelVersion.setPreReleaseVersion("SNAPSHOT");
+        final Version version = this.isSkipDeploy() || !this.isChanged()
+                ? versionOf(getVersion())
+                : nextRelVersion;
+        return version.setPreReleaseVersion("SNAPSHOT");
     }
 
     private static TreeFilter createChangesFiler(final File root, final MavenProject mavenProject) {
@@ -165,6 +166,16 @@ public class ReleaseProject {
 
         add(filters, not(group(excludes)));
         return and(filters);
+    }
+
+    static Version versionOf(String version) {
+        return Version.valueOf(version);
+    }
+
+    static String patch(String version) {
+        return Version.valueOf(version)
+                .incrementPatchVersion()
+                .toString();
     }
 
     static TreeFilter group(Collection<PathFilter> paths) {
