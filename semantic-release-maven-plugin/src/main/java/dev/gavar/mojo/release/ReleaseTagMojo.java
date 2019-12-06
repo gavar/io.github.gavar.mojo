@@ -23,6 +23,7 @@ import org.codehaus.mojo.versions.api.PomHelper;
 import org.codehaus.mojo.versions.rewriting.ModifiedPomXMLEventReader;
 
 import java.io.File;
+import java.util.Objects;
 
 import static org.apache.maven.shared.utils.StringUtils.defaultString;
 
@@ -75,22 +76,28 @@ public class ReleaseTagMojo extends AbstractVersionsUpdaterMojo {
         properties.load(file, false);
 
         final String newTag = properties.getTag(project);
-        log.info("Updating project tag " + prevTag + " > " + newTag);
-        boolean success = PomHelper.setProjectValue(pom, "/project/scm/tag", newTag);
-        if (!success) throw new MojoFailureException("Could not update the SCM tag");
+        final boolean deploy = !Objects.equals(prevTag, newTag);
 
-        final ScmRepository scmRepository = getScmRepository();
-        final ScmProvider scmProvider = manager.getProviderByRepository(scmRepository);
-        final ScmFileSet scmFileSet = new ScmFileSet(cwd);
-        ScmTagParameters scmTagParameters = new ScmTagParameters();
-        scmTagParameters.setRemoteTagging(false);
+        if (deploy) {
+            log.info("Updating project tag " + prevTag + " > " + newTag);
+            boolean success = PomHelper.setProjectValue(pom, "/project/scm/tag", newTag);
+            if (!success) throw new MojoFailureException("Could not update the SCM tag");
+        }
 
-        // create Tag in Scm
-        if (dryRun) {
-            log.info("Full run would create SCM tag: " + newTag);
-        } else {
-            final TagScmResult tsr = scmProvider.tag(scmRepository, scmFileSet, newTag, scmTagParameters);
-            checkResult(tsr);
+        if (deploy) {
+            final ScmRepository scmRepository = getScmRepository();
+            final ScmProvider scmProvider = manager.getProviderByRepository(scmRepository);
+            final ScmFileSet scmFileSet = new ScmFileSet(cwd);
+            ScmTagParameters scmTagParameters = new ScmTagParameters();
+            scmTagParameters.setRemoteTagging(false);
+
+            // create Tag in Scm
+            if (dryRun) {
+                log.info("Full run would create SCM tag: " + newTag);
+            } else {
+                final TagScmResult tsr = scmProvider.tag(scmRepository, scmFileSet, newTag, scmTagParameters);
+                checkResult(tsr);
+            }
         }
     }
 

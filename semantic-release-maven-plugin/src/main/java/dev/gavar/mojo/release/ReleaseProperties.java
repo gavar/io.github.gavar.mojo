@@ -39,18 +39,19 @@ public class ReleaseProperties {
     }
 
     public String getTag(MavenProject project) {
-        return properties.getProperty("project.scm." + keyOf(project) + ".tag");
+        final String KEY = "project.scm." + keyOf(project) + ".tag";
+        return properties.getProperty(KEY);
     }
 
     public void write(ReleaseProject release) {
-        final String project = keyOf(release.getMavenProject());
+        final String key = keyOf(release.getMavenProject());
+        final String nextRelTag = release.getNextRelTag();
         final Version nextRelVersion = release.getNextRelVersion();
         final Version nextDevVersion = release.getNextDevVersion();
 
-        write("project.rel." + project, nextRelVersion);
-        write("project.dev." + project, nextDevVersion);
-        write("project.scm." + project + ".tag", release.tagNameFor(nextRelVersion));
-        write("project.scm." + project + ".empty", release.isSkipDeploy());
+        write("project.rel." + key, nextRelVersion);
+        write("project.dev." + key, nextDevVersion);
+        write("project.scm." + key + ".tag", nextRelTag);
     }
 
     public void write(String key, Object value) {

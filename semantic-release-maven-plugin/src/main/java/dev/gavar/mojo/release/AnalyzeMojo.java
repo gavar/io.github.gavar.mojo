@@ -35,7 +35,7 @@ public class AnalyzeMojo extends BaseMojo {
             final String version = rp.getVersion();
             final String latestTag = rp.getLatestTagName();
             final String latestCommit = refHash(rp.getLatestRef(), 7);
-            final String deploy = deployType(rp.getHasChanges(), rp.isSkipDeploy());
+            final String deploy = deployType(rp.getHasChanges(), rp.isDeploySkip());
             final String relVersion = rp.getNextRelVersion().toString();
             final String devVersion = rp.getNextDevVersion().toString();
 

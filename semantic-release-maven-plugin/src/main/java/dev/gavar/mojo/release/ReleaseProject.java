@@ -74,6 +74,12 @@ public class ReleaseProject {
     private List<Ref> tagRefs = List.of();
     public List<Ref> getTagRefs() { return tagRefs; }
 
+    public String getNextRelTag() {
+        return isDeploySkip()
+                ? this.mavenProject.getScm().getTag()
+                : tagNameFor(nextRelVersion);
+    }
+
     public void setTagRefs(List<Ref> tagRefs) {
         this.hasChanges = null;
         this.tagRefs = tagRefs != null ? unmodifiableList(tagRefs) : List.of();
@@ -98,7 +104,7 @@ public class ReleaseProject {
         return this.mavenProject.getVersion();
     }
 
-    public boolean isSkipDeploy() {
+    public boolean isDeploySkip() {
         return this.config.isSkipDeploy();
     }
 
@@ -139,14 +145,14 @@ public class ReleaseProject {
     }
 
     private Version resolveNextRelVersion() {
-        return isSkipDeploy() ? versionOf(getVersion())
+        return isDeploySkip() ? versionOf(getVersion())
                 : tagRefs.isEmpty() ? versionOf("0.0.1")
                 : hasChanges ? lastReleaseVersion.incrementPatchVersion()
                 : lastReleaseVersion;
     }
 
     private Version resolveNextDevVersion() {
-        final Version version = this.isSkipDeploy() || !this.isChanged()
+        final Version version = this.isDeploySkip() || !this.isChanged()
                 ? versionOf(getVersion())
                 : nextRelVersion;
         return version.setPreReleaseVersion("SNAPSHOT");
