@@ -337,13 +337,9 @@
                     <tag>HEAD</tag>
                     <preparationGoals>
                         clean
-                        package
+                        install
                         semantic-release:release-tag
-                        versions:set-scm-tag@root-tag
                     </preparationGoals>
-                    <completionGoals>
-                        verify
-                    </completionGoals>
                     <checkModificationExcludes>
                         <checkModificationExclude>.idea/**</checkModificationExclude>
                         <checkModificationExclude>**/pom.xml</checkModificationExclude>
@@ -376,42 +372,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${maven-exec-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>delete-latest-tag</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>bash</executable>
-                            <commandlineArgs>-c "git tag -l latest | xargs git tag -d"</commandlineArgs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!--<plugin>-->
-            <!--    <groupId>org.codehaus.mojo</groupId>-->
-            <!--    <artifactId>versions-maven-plugin</artifactId>-->
-            <!--    <executions>-->
-            <!--        <execution>-->
-            <!--            <id>scm-tag</id>-->
-            <!--            <goals>-->
-            <!--                <goal>set-scm-tag</goal>-->
-            <!--            </goals>-->
-            <!--            <configuration>-->
-            <!--                <generateBackupPoms>false</generateBackupPoms>-->
-            <!--                <newTag>${release.tag}</newTag>-->
-            <!--            </configuration>-->
-            <!--        </execution>-->
-            <!--    </executions>-->
-            <!--</plugin>-->
 
             <!-- Enforcer -->
             <plugin>
