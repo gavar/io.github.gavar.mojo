@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static dev.gavar.mojo.release.util.SemanticGitLogUtils.AFFECTS_CODE;
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.unmodifiableList;
 import static org.eclipse.jgit.lib.Constants.R_TAGS;
@@ -51,7 +52,7 @@ public class ReleaseProject {
 
     private Boolean hasChanges;
     public boolean isChanged() { return hasChanges == TRUE; }
-    public boolean isPristine() { return hasChanges != TRUE; }
+    public boolean isPristine() { return hasChanges == FALSE; }
     public Boolean getHasChanges() { return hasChanges; }
     public void setHasChanges(Boolean hasChanges) { this.hasChanges = hasChanges; }
 
