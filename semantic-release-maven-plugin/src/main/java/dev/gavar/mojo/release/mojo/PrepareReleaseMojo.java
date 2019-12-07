@@ -15,11 +15,12 @@ public class PrepareReleaseMojo extends org.apache.maven.plugins.release.Prepare
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
+            // TODO: allow to tag on detached head
             final List<String> phases = phasesOf(releaseManager, "preparePhases");
             addBefore(phases, "map-release-versions", "resolve-semantic-versions");
-            addBefore(phases, "scm-commit-release", "git-detach"); // work on detached head
+            // addBefore(phases, "scm-commit-release", "git-detach"); // work on detached head
             replace(phases, "scm-tag", "scm-tag-projects"); // tag each project
-            addAfter(phases, "scm-tag-projects", "git-attach"); // back to master branch
+            // addAfter(phases, "scm-tag-projects", "git-attach"); // back to master branch
             super.execute();
         } catch (ReflectiveOperationException e) {
             getLog().error(e);

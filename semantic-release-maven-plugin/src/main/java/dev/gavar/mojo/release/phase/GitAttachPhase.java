@@ -21,7 +21,7 @@ public class GitAttachPhase extends AbstractScmPhase {
         try {
             // TODO: read branch from descriptor
             final String commonBaseDir = commonDir(reactorProjects);
-            new ProcessBuilder("git", "checkout", "master")
+            new ProcessBuilder("git", "reset", "master", "--mixed")
                     .directory(new File(commonBaseDir))
                     .redirectErrorStream(true)
                     .start()
