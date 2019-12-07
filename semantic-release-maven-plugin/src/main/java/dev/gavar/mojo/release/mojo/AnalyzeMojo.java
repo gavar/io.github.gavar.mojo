@@ -1,6 +1,7 @@
-package dev.gavar.mojo.release;
+package dev.gavar.mojo.release.mojo;
 
 import dev.gavar.mojo.io.HorizontalTable;
+import dev.gavar.mojo.release.model.ReleaseProject;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
@@ -10,7 +11,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 
 import java.io.IOException;
 
-import static dev.gavar.mojo.release.GitUtils.refHash;
+import static dev.gavar.mojo.release.util.GitUtils.refHash;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -21,7 +22,7 @@ public class AnalyzeMojo extends BaseMojo {
     protected void process() throws IOException {
         final Log log = getLog();
 
-        final Git git = openGit();
+        final Git git = git();
         final Repository repository = git.getRepository();
         final RevWalk walk = new RevWalk(repository);
 

@@ -1,5 +1,7 @@
-package dev.gavar.mojo.release;
+package dev.gavar.mojo.release.mojo;
 
+import dev.gavar.mojo.release.model.ProjectConfig;
+import dev.gavar.mojo.release.model.ReleaseProject;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -10,10 +12,9 @@ import org.eclipse.jgit.api.Git;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Scanner;
 
-import static dev.gavar.mojo.release.ProjectConfig.SCN_TAG_PREFIX;
-import static dev.gavar.mojo.util.GenericUtils.putNonNull;
+import static dev.gavar.mojo.release.model.ProjectConfig.SCM_TAG_PREFIX;
+import static org.apache.maven.shared.release.util.ReleaseUtil.getCommonBasedir;
 
 public abstract class BaseMojo extends AbstractMojo {
 
@@ -23,15 +24,13 @@ public abstract class BaseMojo extends AbstractMojo {
     @Parameter(defaultValue = "${session}", readonly = true, required = true)
     protected MavenSession session;
 
-    @Parameter(property = "git.root")
+    /** Common root directory of the session projects. */
     protected File root;
-
-    @Parameter(property = SCN_TAG_PREFIX)
-    protected String tagPrefix;
 
     @Override
     public void execute() throws MojoExecutionException {
         try {
+            root = new File(getCommonBasedir(session.getProjects()));
             process();
         } catch (MojoExecutionException e) {
             getLog().error(e);
@@ -44,26 +43,14 @@ public abstract class BaseMojo extends AbstractMojo {
 
     protected abstract void process() throws Exception;
 
-    protected Git openGit() throws IOException {
-        if (root == null) {
-            final Process process = new ProcessBuilder
-                    ("git", "rev-parse", "--show-toplevel")
-                    .directory(session.getCurrentProject().getBasedir())
-                    .start();
-            final Scanner scanner = new Scanner(process.getInputStream());
-            root = new File(scanner.nextLine());
-        }
-        getLog().info("GIT repository: " + root);
+    protected Git git() throws IOException {
         return Git.open(root);
     }
 
     protected ReleaseProject toReleaseProject(MavenProject project) {
         final Properties props = new Properties();
         // defaults
-        props.put(SCN_TAG_PREFIX, "v/" + project.getArtifactId() + "/");
-
-        // configuration
-        putNonNull(props, SCN_TAG_PREFIX, tagPrefix);
+        props.put(SCM_TAG_PREFIX, "v/" + project.getArtifactId() + "/");
 
         // per-project configuration
         props.putAll(project.getProperties());

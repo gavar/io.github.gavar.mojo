@@ -1,6 +1,7 @@
-package dev.gavar.mojo.release;
+package dev.gavar.mojo.release.model;
 
 import com.github.zafarkhaja.semver.Version;
+import dev.gavar.mojo.release.util.GitUtils;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Ref;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static dev.gavar.mojo.release.Filters.AFFECTS_CODE;
+import static dev.gavar.mojo.release.util.SemanticGitLogUtils.AFFECTS_CODE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.unmodifiableList;
 import static org.eclipse.jgit.lib.Constants.R_TAGS;
@@ -50,6 +51,7 @@ public class ReleaseProject {
 
     private Boolean hasChanges;
     public boolean isChanged() { return hasChanges == TRUE; }
+    public boolean isPristine() { return hasChanges != TRUE; }
     public Boolean getHasChanges() { return hasChanges; }
     public void setHasChanges(Boolean hasChanges) { this.hasChanges = hasChanges; }
 
@@ -108,8 +110,16 @@ public class ReleaseProject {
         return this.config.isSkipDeploy();
     }
 
+    public boolean shouldSkipTag() {
+        return this.isDeploySkip() || this.isPristine();
+    }
+
     public String tagNameFor(Version version) {
-        return this.config.getTagPrefix() + version.toString();
+        return tagNameFor(version.toString());
+    }
+
+    public String tagNameFor(String version) {
+        return this.config.getTagPrefix() + version;
     }
 
     public ReleaseProject analyze(Git git, RevWalk walk) throws IOException {
@@ -145,16 +155,17 @@ public class ReleaseProject {
     }
 
     private Version resolveNextRelVersion() {
-        return isDeploySkip() ? versionOf(getVersion())
+        return isDeploySkip() ? normalVersionOf(getVersion())
                 : tagRefs.isEmpty() ? versionOf("0.0.1")
                 : hasChanges ? lastReleaseVersion.incrementPatchVersion()
                 : lastReleaseVersion;
     }
 
     private Version resolveNextDevVersion() {
-        final Version version = this.isDeploySkip() || !this.isChanged()
+        final Version version = this.isDeploySkip() || this.isPristine()
                 ? versionOf(getVersion())
                 : nextRelVersion;
+
         return version.setPreReleaseVersion("SNAPSHOT");
     }
 
@@ -174,8 +185,12 @@ public class ReleaseProject {
         return and(filters);
     }
 
-    static Version versionOf(String version) {
-        return Version.valueOf(version);
+    static Version versionOf(String value) {
+        return Version.valueOf(value);
+    }
+    static Version normalVersionOf(String value) {
+        final Version version = versionOf(value);
+        return versionOf(version.getNormalVersion());
     }
 
     static String patch(String version) {

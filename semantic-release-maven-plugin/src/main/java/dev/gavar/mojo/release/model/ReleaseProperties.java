@@ -1,4 +1,4 @@
-package dev.gavar.mojo.release;
+package dev.gavar.mojo.release.model;
 
 import com.github.zafarkhaja.semver.Version;
 import org.apache.maven.project.MavenProject;
@@ -24,8 +24,7 @@ public class ReleaseProperties {
         try (final FileInputStream input = new FileInputStream(file)) {
             properties.load(input);
         } catch (FileNotFoundException e) {
-            if (!optional)
-                throw e;
+            if (!optional) throw e;
         }
     }
 

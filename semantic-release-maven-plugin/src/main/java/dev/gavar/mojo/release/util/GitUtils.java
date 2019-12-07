@@ -1,4 +1,4 @@
-package dev.gavar.mojo.release;
+package dev.gavar.mojo.release.util;
 
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;

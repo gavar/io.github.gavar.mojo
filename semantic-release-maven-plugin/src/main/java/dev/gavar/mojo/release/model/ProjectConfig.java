@@ -1,4 +1,4 @@
-package dev.gavar.mojo.release;
+package dev.gavar.mojo.release.model;
 
 import java.util.Properties;
 
@@ -6,7 +6,7 @@ import static java.lang.Boolean.TRUE;
 
 public class ProjectConfig {
 
-    public final static String SCN_TAG_PREFIX = "scm.tag.prefix";
+    public final static String SCM_TAG_PREFIX = "scm.tag.prefix";
     public final static String MAVEN_DEPLOY_SKIP = "maven.deploy.skip";
 
     private String tagPrefix;
@@ -23,7 +23,7 @@ public class ProjectConfig {
     }
 
     public void load(Properties properties) {
-        tagPrefix = properties.getProperty(SCN_TAG_PREFIX);
+        tagPrefix = properties.getProperty(SCM_TAG_PREFIX);
         skipDeploy = Boolean.valueOf(properties.getProperty(MAVEN_DEPLOY_SKIP));
     }
 }
