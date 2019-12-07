@@ -17,11 +17,12 @@ import java.util.List;
 public class GitDetachPhase extends AbstractScmPhase {
 
     @Override
-    public ReleaseResult execute(ReleaseDescriptor releaseDescriptor, ReleaseEnvironment releaseEnvironment, List<MavenProject> reactorProjects) throws ReleaseExecutionException, ReleaseFailureException {
+    public ReleaseResult execute(final ReleaseDescriptor descriptor,
+                                 final ReleaseEnvironment environment,
+                                 final List<MavenProject> projects) throws ReleaseExecutionException, ReleaseFailureException {
         try {
-            final String commonBaseDir = commonDir(reactorProjects);
             new ProcessBuilder("git", "checkout", "--detach")
-                    .directory(new File(commonBaseDir))
+                    .directory(new File(descriptor.getWorkingDirectory()))
                     .redirectErrorStream(true)
                     .start()
                     .waitFor();
@@ -34,7 +35,9 @@ public class GitDetachPhase extends AbstractScmPhase {
     }
 
     @Override
-    public ReleaseResult simulate(ReleaseDescriptor releaseDescriptor, ReleaseEnvironment releaseEnvironment, List<MavenProject> reactorProjects) throws ReleaseExecutionException, ReleaseFailureException {
+    public ReleaseResult simulate(final ReleaseDescriptor descriptor,
+                                  final ReleaseEnvironment environment,
+                                  final List<MavenProject> projects) throws ReleaseExecutionException, ReleaseFailureException {
         final ReleaseResult result = new ReleaseResult();
         logInfo(result, "Full run would checkout to detached head");
         result.setResultCode(ReleaseResult.SUCCESS);

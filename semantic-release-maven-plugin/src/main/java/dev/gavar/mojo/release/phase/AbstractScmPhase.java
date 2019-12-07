@@ -36,8 +36,7 @@ public abstract class AbstractScmPhase extends AbstractReleasePhase {
     public ScmRepository getScmRepository(final ReleaseDescriptor descriptor,
                                           final ReleaseEnvironment environment,
                                           final List<MavenProject> reactorProjects) throws ReleaseExecutionException {
-        final String dir = commonDir(reactorProjects);
-        return getScmRepository(descriptor, environment, dir);
+        return getScmRepository(descriptor, environment, descriptor.getWorkingDirectory());
     }
 
     public ScmRepository getScmRepository(final ReleaseDescriptor descriptor,

@@ -42,16 +42,16 @@ public class ResolveVersionsPhase extends AbstractSemanticPhase {
     }
 
     public ReleaseResult process(ReleaseDescriptor descriptor, List<MavenProject> reactorProjects) throws IOException, ReleaseExecutionException {
-        final File root = new File(commonDir(reactorProjects));
+        final File dir = new File(descriptor.getWorkingDirectory());
 
-        final Git git = Git.open(root);
+        final Git git = Git.open(dir);
         final Repository repository = git.getRepository();
         final RevWalk walk = new RevWalk(repository);
 
         // analyze projects
         for (MavenProject project : reactorProjects) {
             final String key = versionlessKey(project);
-            final ReleaseProject release = toReleaseProject(project, root).analyze(git, walk);
+            final ReleaseProject release = toReleaseProject(project, dir).analyze(git, walk);
             descriptor.addReleaseVersion(key, release.getNextRelVersion().toString());
             descriptor.addDevelopmentVersion(key, release.getNextDevVersion().toString());
         }

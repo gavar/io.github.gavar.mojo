@@ -54,7 +54,7 @@ public class TagProjectsPhase extends AbstractSemanticPhase {
         ReleaseResult result = new ReleaseResult();
         result.setResultCode(ReleaseResult.SUCCESS);
 
-        final File root = new File(commonDir(mavenProjects));
+        final File root = new File(descriptor.getWorkingDirectory());
         final ScmRepository repository = getScmRepository(descriptor, environment, root.getPath());
         final ScmProvider provider = getScmProvider(repository);
 
