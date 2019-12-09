@@ -78,7 +78,7 @@ public class ReleaseProject {
     public List<Ref> getTagRefs() { return tagRefs; }
 
     public String getNextRelTag() {
-        return isDeploySkip()
+        return shouldSkipTag()
                 ? this.mavenProject.getScm().getTag()
                 : tagNameFor(nextRelVersion);
     }

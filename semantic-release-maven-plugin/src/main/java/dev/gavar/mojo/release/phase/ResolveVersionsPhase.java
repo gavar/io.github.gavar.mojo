@@ -54,6 +54,8 @@ public class ResolveVersionsPhase extends AbstractSemanticPhase {
             final ReleaseProject release = toReleaseProject(project, dir).analyze(git, walk);
             descriptor.addReleaseVersion(key, release.getNextRelVersion().toString());
             descriptor.addDevelopmentVersion(key, release.getNextDevVersion().toString());
+            if (!release.shouldSkipTag())
+                descriptor.addReleaseVersion(key + ".tag", release.getNextRelTag());
         }
 
         final ReleaseResult result = new ReleaseResult();

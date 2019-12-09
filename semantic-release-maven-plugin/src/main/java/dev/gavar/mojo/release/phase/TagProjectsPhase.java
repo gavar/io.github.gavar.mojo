@@ -1,6 +1,5 @@
 package dev.gavar.mojo.release.phase;
 
-import dev.gavar.mojo.release.model.ReleaseProject;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFileSet;
@@ -18,9 +17,9 @@ import org.codehaus.plexus.component.annotations.Component;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 import static dev.gavar.mojo.release.util.ProjectUtils.versionlessKey;
-import static org.apache.maven.shared.utils.StringUtils.defaultString;
 
 @Component(role = ReleasePhase.class, hint = "scm-tag-projects")
 public class TagProjectsPhase extends AbstractSemanticPhase {
@@ -59,12 +58,9 @@ public class TagProjectsPhase extends AbstractSemanticPhase {
         final ScmProvider provider = getScmProvider(repository);
 
         for (MavenProject mavenProject : mavenProjects) {
-            final ReleaseProject releaseProject = toReleaseProject(mavenProject, root);
-            if (releaseProject.shouldSkipTag()) continue;
-
             final String key = versionlessKey(mavenProject);
-            final String version = defaultString(descriptor.getReleaseVersions().get(key));
-            final String tagName = releaseProject.tagNameFor(version);
+            final String tagName = Objects.toString(descriptor.getReleaseVersions().get(key + ".tag"), null);
+            if (tagName == null) continue;
 
             if (simulate) {
                 logInfo(result, "Full run would create tag: " + tagName);
