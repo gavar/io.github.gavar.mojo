@@ -25,6 +25,7 @@ import static dev.gavar.mojo.release.util.SemanticGitLogUtils.AFFECTS_CODE;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.unmodifiableList;
+import static org.apache.maven.shared.utils.StringUtils.defaultString;
 import static org.eclipse.jgit.lib.Constants.R_TAGS;
 
 public class ReleaseProject {
@@ -77,9 +78,9 @@ public class ReleaseProject {
     private List<Ref> tagRefs = List.of();
     public List<Ref> getTagRefs() { return tagRefs; }
 
-    public String getNextRelTag() {
+    public String getReleaseTag() {
         return shouldSkipTag()
-                ? this.mavenProject.getScm().getTag()
+                ? defaultString(latestTagName, mavenProject.getScm().getTag())
                 : tagNameFor(nextRelVersion);
     }
 

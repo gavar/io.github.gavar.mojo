@@ -17,9 +17,11 @@ import org.codehaus.plexus.component.annotations.Component;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static dev.gavar.mojo.release.util.ProjectUtils.versionlessKey;
+import static java.lang.Boolean.parseBoolean;
 
 @Component(role = ReleasePhase.class, hint = "scm-tag-projects")
 public class TagProjectsPhase extends AbstractSemanticPhase {
@@ -59,10 +61,13 @@ public class TagProjectsPhase extends AbstractSemanticPhase {
 
         for (MavenProject mavenProject : mavenProjects) {
             final String key = versionlessKey(mavenProject);
-            final String tagName = Objects.toString(descriptor.getReleaseVersions().get(key + ".tag"), null);
-            if (tagName == null) continue;
+            final Map releaseVersions = descriptor.getReleaseVersions();
+            final String tagName = Objects.toString(releaseVersions.get(key + ".tag"), mavenProject.getScm().getTag());
+            final boolean skipTag = parseBoolean(Objects.toString(releaseVersions.get(key + ".tag.skip"), "false"));
 
-            if (simulate) {
+            if (skipTag || tagName == null) {
+                logInfo(result, "Skipping tag for project: " + key);
+            } else if (simulate) {
                 logInfo(result, "Full run would create tag: " + tagName);
             } else {
                 final ScmFileSet fileSet = new ScmFileSet(root);
