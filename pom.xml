@@ -276,6 +276,7 @@
                         <releaseProfiles>github</releaseProfiles>
                         <remoteTagging>true</remoteTagging>
                         <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
+                        <tag>latest</tag>
                         <useReleaseProfile>true</useReleaseProfile>
                         <checkModificationExcludes>
                             <checkModificationExclude>.idea/**</checkModificationExclude>
