@@ -36,8 +36,8 @@ public class StringInterpolator extends ConfigurationInterpolator {
     @Override
     public Object interpolate(Object value) {
         return value instanceof String
-                ? interpolate((String) value)
-                : value;
+            ? interpolate((String) value)
+            : value;
     }
 
     private String interpolate(String value) {

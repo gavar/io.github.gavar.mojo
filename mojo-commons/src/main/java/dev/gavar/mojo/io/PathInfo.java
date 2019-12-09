@@ -188,7 +188,7 @@ public class PathInfo {
 
     private static String slash(Path path) {
         return path != null
-                ? path.toString().replace(BACK_SLASH, FRONT_SLASH)
-                : null;
+            ? path.toString().replace(BACK_SLASH, FRONT_SLASH)
+            : null;
     }
 }

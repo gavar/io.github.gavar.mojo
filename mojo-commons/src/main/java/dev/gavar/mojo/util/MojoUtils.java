@@ -17,8 +17,8 @@ public class MojoUtils {
      */
     public static String unescape(String value) {
         return value.contains("@{")
-                ? value.replace("@{", "${")
-                : value;
+            ? value.replace("@{", "${")
+            : value;
     }
 
     /**

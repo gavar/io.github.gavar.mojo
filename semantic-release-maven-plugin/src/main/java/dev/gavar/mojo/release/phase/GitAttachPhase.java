@@ -23,10 +23,10 @@ public class GitAttachPhase extends AbstractScmPhase {
         try {
             // TODO: read branch from descriptor
             new ProcessBuilder("git", "reset", "master", "--mixed")
-                    .directory(new File(descriptor.getWorkingDirectory()))
-                    .redirectErrorStream(true)
-                    .start()
-                    .waitFor();
+                .directory(new File(descriptor.getWorkingDirectory()))
+                .redirectErrorStream(true)
+                .start()
+                .waitFor();
         } catch (IOException | InterruptedException e) {
             throw new ReleaseExecutionException(e.getMessage(), e);
         }

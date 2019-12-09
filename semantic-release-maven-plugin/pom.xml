@@ -1,82 +1,82 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>dev.gavar.mojo</groupId>
-        <artifactId>mojo-parent</artifactId>
-        <version>0.0.0-SNAPSHOT</version>
-        <relativePath>..</relativePath>
-    </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>dev.gavar.mojo</groupId>
+    <artifactId>mojo-parent</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+    <relativePath>..</relativePath>
+  </parent>
 
-    <artifactId>semantic-release-maven-plugin</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>maven-plugin</packaging>
+  <artifactId>semantic-release-maven-plugin</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
 
-    <properties>
-        <maven.deploy.skip>false</maven.deploy.skip>
-    </properties>
+  <properties>
+    <maven.deploy.skip>false</maven.deploy.skip>
+  </properties>
 
-    <prerequisites>
-        <maven>${maven.version}</maven>
-    </prerequisites>
+  <prerequisites>
+    <maven>${maven.version}</maven>
+  </prerequisites>
 
-    <scm>
-        <tag>HEAD</tag>
-        <url>${scm.url.base}/${project.scm.tag}</url>
-    </scm>
+  <scm>
+    <tag>HEAD</tag>
+    <url>${scm.url.base}/${project.scm.tag}</url>
+  </scm>
 
-    <dependencies>
-        <!-- project modules -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>mojo-commons</artifactId>
-        </dependency>
+  <dependencies>
+    <!-- project modules -->
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mojo-commons</artifactId>
+    </dependency>
 
-        <!-- Maven -->
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-        </dependency>
+    <!-- Maven -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+    </dependency>
 
-        <!-- JGIT -->
-        <dependency>
-            <groupId>org.eclipse.jgit</groupId>
-            <artifactId>org.eclipse.jgit</artifactId>
-        </dependency>
+    <!-- JGIT -->
+    <dependency>
+      <groupId>org.eclipse.jgit</groupId>
+      <artifactId>org.eclipse.jgit</artifactId>
+    </dependency>
 
-        <!-- SemVer -->
-        <dependency>
-            <groupId>com.github.zafarkhaja</groupId>
-            <artifactId>java-semver</artifactId>
-        </dependency>
+    <!-- SemVer -->
+    <dependency>
+      <groupId>com.github.zafarkhaja</groupId>
+      <artifactId>java-semver</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>versions-maven-plugin</artifactId>
-            <version>${versions-maven-plugin.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>versions-maven-plugin</artifactId>
+      <version>${versions-maven-plugin.version}</version>
+    </dependency>
 
-    </dependencies>
+  </dependencies>
 
-    <build>
-        <plugins>
-            <!-- configure plugin descriptor -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-            </plugin>
+  <build>
+    <plugins>
+      <!-- configure plugin descriptor -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+      </plugin>
 
-            <!-- Plexus components descriptors -->
-            <plugin>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-component-metadata</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+      <!-- Plexus components descriptors -->
+      <plugin>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-metadata</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

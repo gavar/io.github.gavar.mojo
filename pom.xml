@@ -1,379 +1,379 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>dev.gavar.mojo</groupId>
-    <artifactId>mojo-parent</artifactId>
-    <version>0.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+  <groupId>dev.gavar.mojo</groupId>
+  <artifactId>mojo-parent</artifactId>
+  <version>0.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
-    <modules>
-        <module>mojo-commons</module>
-        <module>rc-maven-plugin</module>
-        <module>jooq-liquibase-maven-plugin</module>
-        <module>semantic-release-maven-plugin</module>
-    </modules>
+  <modules>
+    <module>mojo-commons</module>
+    <module>rc-maven-plugin</module>
+    <module>jooq-liquibase-maven-plugin</module>
+    <module>semantic-release-maven-plugin</module>
+  </modules>
 
-    <properties>
-        <!-- configurations -->
-        <java.version>12</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <properties>
+    <!-- configurations -->
+    <java.version>12</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- deploy config -->
-        <maven.deploy.skip>true</maven.deploy.skip>
-        <scm.url.base>https://github.com/gavar/dev.gavar.mojo/tree</scm.url.base>
+    <!-- deploy config -->
+    <maven.deploy.skip>true</maven.deploy.skip>
+    <scm.url.base>https://github.com/gavar/dev.gavar.mojo/tree</scm.url.base>
 
-        <!-- variables -->
-        <dryRun>false</dryRun>
-        <skipTests>false</skipTests>
+    <!-- variables -->
+    <dryRun>false</dryRun>
+    <skipTests>false</skipTests>
 
-        <!-- versions -->
-        <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <commons-configuration.version>2.6</commons-configuration.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
-        <flatten-maven-plugin.version>1.1.0</flatten-maven-plugin.version>
-        <jackson-databind.version>2.10.1</jackson-databind.version>
-        <java-semver.version>0.9.0</java-semver.version>
-        <jgit.version>5.5.1.201910021850-r</jgit.version>
-        <jooq.version>3.12.3</jooq.version>
-        <junit.version>5.5.2</junit.version>
-        <liquibase.version>3.8.1</liquibase.version>
-        <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
-        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
-        <maven-invoker.version>3.2.1</maven-invoker.version>
-        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-        <maven-surefire.version>2.22.2</maven-surefire.version>
-        <maven.version>3.6.0</maven.version>
-        <plexus.version>2.1.0</plexus.version>
-        <snakeyaml.version>1.25</snakeyaml.version>
-        <testcontainers.version>1.12.3</testcontainers.version>
-        <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
-    </properties>
+    <!-- versions -->
+    <commons-beanutils.version>1.9.4</commons-beanutils.version>
+    <commons-configuration.version>2.6</commons-configuration.version>
+    <commons-lang3.version>3.9</commons-lang3.version>
+    <flatten-maven-plugin.version>1.1.0</flatten-maven-plugin.version>
+    <jackson-databind.version>2.10.1</jackson-databind.version>
+    <java-semver.version>0.9.0</java-semver.version>
+    <jgit.version>5.5.1.201910021850-r</jgit.version>
+    <jooq.version>3.12.3</jooq.version>
+    <junit.version>5.5.2</junit.version>
+    <liquibase.version>3.8.1</liquibase.version>
+    <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
+    <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
+    <maven-invoker.version>3.2.1</maven-invoker.version>
+    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+    <maven-surefire.version>2.22.2</maven-surefire.version>
+    <maven.version>3.6.0</maven.version>
+    <plexus.version>2.1.0</plexus.version>
+    <snakeyaml.version>1.25</snakeyaml.version>
+    <testcontainers.version>1.12.3</testcontainers.version>
+    <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
+  </properties>
 
-    <scm>
-        <tag>HEAD</tag>
-        <url>${scm.url.base}/${project.scm.tag}</url>
-        <connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</connection>
-        <developerConnection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</developerConnection>
-    </scm>
+  <scm>
+    <tag>HEAD</tag>
+    <url>${scm.url.base}/${project.scm.tag}</url>
+    <connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</connection>
+    <developerConnection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</developerConnection>
+  </scm>
 
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>https://choosealicense.com/licenses/mit</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://choosealicense.com/licenses/mit</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
-    <profiles>
-        <!-- Deployment to GitHub Packages -->
-        <profile>
-            <id>github</id>
-            <distributionManagement>
-                <repository>
-                    <id>github</id>
-                    <name>GitHub Apache Maven Packages</name>
-                    <url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-    </profiles>
+  <profiles>
+    <!-- Deployment to GitHub Packages -->
+    <profile>
+      <id>github</id>
+      <distributionManagement>
+        <repository>
+          <id>github</id>
+          <name>GitHub Apache Maven Packages</name>
+          <url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
 
-    <dependencyManagement>
-        <dependencies>
-            <!-- project modules -->
-            <!-- versions updated by maven-release-plugin -->
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>mojo-commons</artifactId>
-                <version>0.0.4-SNAPSHOT</version>
-            </dependency>
-
-            <!-- Apache Commons -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-configuration2</artifactId>
-                <version>${commons-configuration.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>${commons-beanutils.version}</version>
-            </dependency>
-
-            <!-- YAML -->
-            <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>${snakeyaml.version}</version>
-            </dependency>
-
-            <!-- JSON -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson-databind.version}</version>
-            </dependency>
-
-            <!-- Maven -->
-            <dependency>
-                <groupId>org.apache.maven</groupId>
-                <artifactId>maven-core</artifactId>
-                <version>${maven.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.maven.plugin-tools</groupId>
-                <artifactId>maven-plugin-annotations</artifactId>
-                <version>${maven.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <!-- Liquibase -->
-            <dependency>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-core</artifactId>
-                <version>${liquibase.version}</version>
-            </dependency>
-
-            <!-- Test Containers -->
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers</artifactId>
-                <version>${testcontainers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>jdbc</artifactId>
-                <version>${testcontainers.version}</version>
-            </dependency>
-
-            <!-- JOOQ -->
-            <dependency>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-meta</artifactId>
-                <version>${jooq.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jooq</groupId>
-                <artifactId>jooq-codegen</artifactId>
-                <version>${jooq.version}</version>
-            </dependency>
-
-            <!-- SemVer -->
-            <dependency>
-                <groupId>com.github.zafarkhaja</groupId>
-                <artifactId>java-semver</artifactId>
-                <version>${java-semver.version}</version>
-            </dependency>
-
-            <!-- GIT -->
-            <dependency>
-                <groupId>org.eclipse.jgit</groupId>
-                <artifactId>org.eclipse.jgit</artifactId>
-                <version>${jgit.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+  <dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-release-plugin</artifactId>
-            <version>${maven-release-plugin.version}</version>
-        </dependency>
+      <!-- project modules -->
+      <!-- versions updated by maven-release-plugin -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mojo-commons</artifactId>
+        <version>0.0.4-SNAPSHOT</version>
+      </dependency>
 
-        <!-- test -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- CSV support -->
-        <dependency>
-            <groupId>com.univocity</groupId>
-            <artifactId>univocity-parsers</artifactId>
-            <version>2.8.3</version>
-            <scope>test</scope>
-        </dependency>
+      <!-- Apache Commons -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-configuration2</artifactId>
+        <version>${commons-configuration.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>${commons-beanutils.version}</version>
+      </dependency>
+
+      <!-- YAML -->
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${snakeyaml.version}</version>
+      </dependency>
+
+      <!-- JSON -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-databind.version}</version>
+      </dependency>
+
+      <!-- Maven -->
+      <dependency>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-core</artifactId>
+        <version>${maven.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.maven.plugin-tools</groupId>
+        <artifactId>maven-plugin-annotations</artifactId>
+        <version>${maven.version}</version>
+        <scope>provided</scope>
+      </dependency>
+
+      <!-- Liquibase -->
+      <dependency>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-core</artifactId>
+        <version>${liquibase.version}</version>
+      </dependency>
+
+      <!-- Test Containers -->
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers</artifactId>
+        <version>${testcontainers.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>jdbc</artifactId>
+        <version>${testcontainers.version}</version>
+      </dependency>
+
+      <!-- JOOQ -->
+      <dependency>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-meta</artifactId>
+        <version>${jooq.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen</artifactId>
+        <version>${jooq.version}</version>
+      </dependency>
+
+      <!-- SemVer -->
+      <dependency>
+        <groupId>com.github.zafarkhaja</groupId>
+        <artifactId>java-semver</artifactId>
+        <version>${java-semver.version}</version>
+      </dependency>
+
+      <!-- GIT -->
+      <dependency>
+        <groupId>org.eclipse.jgit</groupId>
+        <artifactId>org.eclipse.jgit</artifactId>
+        <version>${jgit.version}</version>
+      </dependency>
     </dependencies>
+  </dependencyManagement>
 
-    <build>
-        <resources>
-            <!-- turn on filtering by default for ALL properties -->
-            <resource>
-                <directory>${resources}</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.yml</include>
-                    <include>**/*.yaml</include>
-                    <include>**/*.properties</include>
-                </includes>
-                <excludes>
-                    <!-- exclude files having name starting with '#' -->
-                    <exclude>**/#*.*</exclude>
-                </excludes>
-            </resource>
-            <!-- include resources -->
-            <resource>
-                <directory>${resources}</directory>
-                <excludes>
-                    <!-- exclude files having name starting with '#' -->
-                    <exclude>**/#*.*</exclude>
-                </excludes>
-            </resource>
-        </resources>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-release-plugin</artifactId>
+      <version>${maven-release-plugin.version}</version>
+    </dependency>
 
-        <testResources>
-            <!-- turn on filtering by default for ALL properties -->
-            <testResource>
-                <directory>${basedir}/src/test/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.yml</include>
-                    <include>**/*.yaml</include>
-                    <include>**/*.properties</include>
-                </includes>
-            </testResource>
-            <!-- include resources -->
-            <testResource>
-                <directory>${basedir}/src/test/resources</directory>
-            </testResource>
-        </testResources>
+    <!-- test -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- CSV support -->
+    <dependency>
+      <groupId>com.univocity</groupId>
+      <artifactId>univocity-parsers</artifactId>
+      <version>2.8.3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
-        <pluginManagement>
-            <plugins>
-                <!-- project plugins -->
-                <!-- versions updated by maven-release-plugin -->
-                <plugin>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>semantic-release-maven-plugin</artifactId>
-                    <version>0.0.1-SNAPSHOT</version>
-                    <configuration>
-                        <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun}</arguments>
-                        <autoVersionSubmodules>false</autoVersionSubmodules>
-                        <pushChanges>true</pushChanges>
-                        <releaseProfiles>github</releaseProfiles>
-                        <remoteTagging>true</remoteTagging>
-                        <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
-                        <tag>latest</tag>
-                        <useReleaseProfile>true</useReleaseProfile>
-                        <checkModificationExcludes>
-                            <checkModificationExclude>.idea/**</checkModificationExclude>
-                        </checkModificationExcludes>
-                    </configuration>
-                </plugin>
+  <build>
+    <resources>
+      <!-- turn on filtering by default for ALL properties -->
+      <resource>
+        <directory>${resources}</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*.yml</include>
+          <include>**/*.yaml</include>
+          <include>**/*.properties</include>
+        </includes>
+        <excludes>
+          <!-- exclude files having name starting with '#' -->
+          <exclude>**/#*.*</exclude>
+        </excludes>
+      </resource>
+      <!-- include resources -->
+      <resource>
+        <directory>${resources}</directory>
+        <excludes>
+          <!-- exclude files having name starting with '#' -->
+          <exclude>**/#*.*</exclude>
+        </excludes>
+      </resource>
+    </resources>
 
-                <!-- configure plugin descriptor -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-plugin-plugin</artifactId>
-                    <version>${maven.version}</version>
-                </plugin>
+    <testResources>
+      <!-- turn on filtering by default for ALL properties -->
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*.yml</include>
+          <include>**/*.yaml</include>
+          <include>**/*.properties</include>
+        </includes>
+      </testResource>
+      <!-- include resources -->
+      <testResource>
+        <directory>${basedir}/src/test/resources</directory>
+      </testResource>
+    </testResources>
 
-                <!-- Plexus components descriptors -->
-                <plugin>
-                    <groupId>org.codehaus.plexus</groupId>
-                    <artifactId>plexus-component-metadata</artifactId>
-                    <version>${plexus.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>generate-metadata</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
+    <pluginManagement>
+      <plugins>
+        <!-- project plugins -->
+        <!-- versions updated by maven-release-plugin -->
+        <plugin>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>semantic-release-maven-plugin</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+          <configuration>
+            <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun}</arguments>
+            <autoVersionSubmodules>false</autoVersionSubmodules>
+            <pushChanges>true</pushChanges>
+            <releaseProfiles>github</releaseProfiles>
+            <remoteTagging>true</remoteTagging>
+            <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
+            <tag>latest</tag>
+            <useReleaseProfile>true</useReleaseProfile>
+            <checkModificationExcludes>
+              <checkModificationExclude>.idea/**</checkModificationExclude>
+            </checkModificationExcludes>
+          </configuration>
+        </plugin>
 
-                <!-- plugin versions -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>versions-maven-plugin</artifactId>
-                    <version>${versions-maven-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>${maven-release-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${maven-enforcer-plugin.version}</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <!-- configure plugin descriptor -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${maven.version}</version>
+        </plugin>
 
-        <plugins>
-            <!-- tests -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire.version}</version>
-                <configuration>
-                    <skipTests>${skipTests}</skipTests>
-                </configuration>
-            </plugin>
+        <!-- Plexus components descriptors -->
+        <plugin>
+          <groupId>org.codehaus.plexus</groupId>
+          <artifactId>plexus-component-metadata</artifactId>
+          <version>${plexus.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>generate-metadata</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
 
-            <!-- incrementals:reincrementalify -->
-            <!-- preserve ${revision}${changelist} after release-->
-            <plugin>
-                <groupId>io.jenkins.tools.incrementals</groupId>
-                <artifactId>incrementals-maven-plugin</artifactId>
-                <version>1.1</version>
-            </plugin>
+        <!-- plugin versions -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versions-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven-enforcer-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
 
-            <!-- Enforcer -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>enforce-maven</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <requireMavenVersion>
-                                    <version>${maven.version}</version>
-                                </requireMavenVersion>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <plugins>
+      <!-- tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire.version}</version>
+        <configuration>
+          <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
 
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-                <version>${maven.version}</version>
-            </plugin>
-        </plugins>
-    </reporting>
+      <!-- incrementals:reincrementalify -->
+      <!-- preserve ${revision}${changelist} after release-->
+      <plugin>
+        <groupId>io.jenkins.tools.incrementals</groupId>
+        <artifactId>incrementals-maven-plugin</artifactId>
+        <version>1.1</version>
+      </plugin>
+
+      <!-- Enforcer -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>${maven.version}</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>${maven.version}</version>
+      </plugin>
+    </plugins>
+  </reporting>
 
 </project>

@@ -45,8 +45,8 @@ public class OutputInjection extends AbstractOutput {
     /** Array of beans evaluated from the {@link #expressions}. */
     public Properties[] getBeans() {
         return Arrays.stream(expressions)
-                .map(this::evaluate)
-                .toArray(Properties[]::new);
+            .map(this::evaluate)
+            .toArray(Properties[]::new);
     }
 
     /**
@@ -81,8 +81,8 @@ public class OutputInjection extends AbstractOutput {
             return (Properties) bean;
 
         throw new IllegalArgumentException(format(
-                "expression '%s' evaluated to bean of type '%s' but expected to be '%s'",
-                expression, bean.getClass(), Properties.class
+            "expression '%s' evaluated to bean of type '%s' but expected to be '%s'",
+            expression, bean.getClass(), Properties.class
         ));
     }
 

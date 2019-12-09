@@ -64,8 +64,8 @@ public class ReleaseProperties {
 
     private static String keyOf(MavenProject project) {
         return String.join(":",
-                project.getGroupId(),
-                project.getArtifactId()
+            project.getGroupId(),
+            project.getArtifactId()
         );
     }
 }

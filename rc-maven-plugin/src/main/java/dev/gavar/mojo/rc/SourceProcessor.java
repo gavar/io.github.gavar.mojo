@@ -62,9 +62,9 @@ public class SourceProcessor {
 
     private List<Entry> collect(List<Entry> items, PropertyFileSet source) {
         return collect(items, source,
-                valueOrDefault(source.variants, this.variants),
-                valueOrDefault(source.extensions, this.extensions),
-                valueOrDefault(source.modular, this.modular)
+            valueOrDefault(source.variants, this.variants),
+            valueOrDefault(source.extensions, this.extensions),
+            valueOrDefault(source.modular, this.modular)
         );
     }
 
@@ -72,9 +72,9 @@ public class SourceProcessor {
                                 String[] variants, String[] extensions, Boolean modular) {
         for (PropertyFile file : source.files)
             items = collect(items, file,
-                    valueOrDefault(file.variants, variants),
-                    valueOrDefault(file.extensions, extensions),
-                    valueOrDefault(file.modular, modular)
+                valueOrDefault(file.variants, variants),
+                valueOrDefault(file.extensions, extensions),
+                valueOrDefault(file.modular, modular)
             );
         return items;
     }

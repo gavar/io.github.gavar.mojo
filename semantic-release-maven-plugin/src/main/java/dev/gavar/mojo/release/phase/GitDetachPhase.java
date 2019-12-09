@@ -22,10 +22,10 @@ public class GitDetachPhase extends AbstractScmPhase {
                                  final List<MavenProject> projects) throws ReleaseExecutionException, ReleaseFailureException {
         try {
             new ProcessBuilder("git", "checkout", "--detach")
-                    .directory(new File(descriptor.getWorkingDirectory()))
-                    .redirectErrorStream(true)
-                    .start()
-                    .waitFor();
+                .directory(new File(descriptor.getWorkingDirectory()))
+                .redirectErrorStream(true)
+                .start()
+                .waitFor();
         } catch (IOException | InterruptedException e) {
             throw new ReleaseExecutionException(e.getMessage(), e);
         }

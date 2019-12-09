@@ -8,7 +8,7 @@ public class SemanticGitLogUtils {
     public static final RevFilter CHORE_MESSAGE = MessageRevFilter.create("^chore(.*):");
     public static final RevFilter TEST_MESSAGE = MessageRevFilter.create("^test(.*):");
     public static final RevFilter AFFECTS_CODE = OrRevFilter.create(
-            CHORE_MESSAGE,
-            TEST_MESSAGE
+        CHORE_MESSAGE,
+        TEST_MESSAGE
     ).negate();
 }

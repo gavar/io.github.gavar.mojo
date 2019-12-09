@@ -119,7 +119,7 @@ public class GenerateMojo extends AbstractChangeLogMojo {
         }
 
         return new Configuration()
-                .withGenerator(generator);
+            .withGenerator(generator);
     }
 
     private List<File> getConfigurationFiles() {

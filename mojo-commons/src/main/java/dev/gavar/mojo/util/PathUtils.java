@@ -16,9 +16,9 @@ public class PathUtils {
     public static Path findCommonPath(Iterable<Path> paths, boolean normalize) {
         if (normalize)
             paths = stream(paths.spliterator(), false)
-                    .map(Path::toAbsolutePath)
-                    .map(Path::normalize)
-                    .collect(toList());
+                .map(Path::toAbsolutePath)
+                .map(Path::normalize)
+                .collect(toList());
 
         Path common = getFirst(paths, null);
         while (common != null && !isCommonPath(common, paths))

@@ -6,7 +6,6 @@ import org.codehaus.plexus.util.StringUtils;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class AbstractOutput {
@@ -69,14 +68,14 @@ public abstract class AbstractOutput {
 
     private static boolean include(String name, Pattern[] patterns) {
         return patterns == null
-                || patterns.length == 0
-                || find(name, patterns);
+            || patterns.length == 0
+            || find(name, patterns);
     }
 
     private static boolean exclude(String name, Pattern[] patterns) {
         return patterns != null
-                && patterns.length > 0
-                && find(name, patterns);
+            && patterns.length > 0
+            && find(name, patterns);
     }
 
     private static boolean find(String value, Pattern[] patterns) {
@@ -96,9 +95,9 @@ public abstract class AbstractOutput {
 
     private static Pattern[] toPatterns(String... strings) {
         return Arrays.stream(strings)
-                .filter(StringUtils::isNotBlank)
-                .map(Pattern::compile)
-                .toArray(Pattern[]::new)
-                ;
+            .filter(StringUtils::isNotBlank)
+            .map(Pattern::compile)
+            .toArray(Pattern[]::new)
+            ;
     }
 }

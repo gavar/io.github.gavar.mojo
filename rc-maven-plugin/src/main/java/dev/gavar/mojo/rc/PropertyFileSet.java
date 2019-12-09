@@ -17,8 +17,8 @@ public class PropertyFileSet {
 
     static PropertyFileSet files(String... files) {
         return new PropertyFileSet(Arrays.stream(files)
-                .map(PropertyFile::new)
-                .toArray(PropertyFile[]::new));
+            .map(PropertyFile::new)
+            .toArray(PropertyFile[]::new));
     }
 
     /** List of properties files locations. */

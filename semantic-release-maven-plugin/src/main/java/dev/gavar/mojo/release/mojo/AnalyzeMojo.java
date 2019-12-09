@@ -53,14 +53,14 @@ public class AnalyzeMojo extends BaseMojo {
 
     static String YesNo(Boolean condition) {
         return condition == TRUE ? "Yes"
-                : condition == FALSE ? "No"
-                : null;
+            : condition == FALSE ? "No"
+            : null;
     }
 
     static String deployType(Boolean changes, boolean skip) {
         return skip == TRUE ? "SKIP"
-                : changes == TRUE ? "YES"
-                : changes == FALSE ? "NO"
-                : "NEW";
+            : changes == TRUE ? "YES"
+            : changes == FALSE ? "NO"
+            : "NEW";
     }
 }

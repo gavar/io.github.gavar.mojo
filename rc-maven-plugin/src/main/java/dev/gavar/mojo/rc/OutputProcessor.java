@@ -48,8 +48,8 @@ public class OutputProcessor {
 
     private static Properties sorted(Properties properties) {
         return properties instanceof SortedProperties
-                ? properties
-                : new SortedProperties(properties);
+            ? properties
+            : new SortedProperties(properties);
     }
 
     private void write(Properties source, File file) throws IOException {

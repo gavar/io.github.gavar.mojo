@@ -1,42 +1,42 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>dev.gavar.mojo</groupId>
-        <artifactId>mojo-parent</artifactId>
-        <version>0.0.0-SNAPSHOT</version>
-    </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>dev.gavar.mojo</groupId>
+    <artifactId>mojo-parent</artifactId>
+    <version>0.0.0-SNAPSHOT</version>
+  </parent>
 
-    <artifactId>mojo-commons</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
-    <packaging>jar</packaging>
+  <artifactId>mojo-commons</artifactId>
+  <version>0.0.4-SNAPSHOT</version>
+  <packaging>jar</packaging>
 
-    <properties>
-        <maven.deploy.skip>false</maven.deploy.skip>
-    </properties>
+  <properties>
+    <maven.deploy.skip>false</maven.deploy.skip>
+  </properties>
 
-    <scm>
-        <tag>HEAD</tag>
-        <url>${scm.url.base}/${project.scm.tag}</url>
-    </scm>
+  <scm>
+    <tag>HEAD</tag>
+    <url>${scm.url.base}/${project.scm.tag}</url>
+  </scm>
 
-    <dependencies>
-        <!-- Maven -->
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
-        </dependency>
+  <dependencies>
+    <!-- Maven -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+    </dependency>
 
-        <!-- Apache Commons -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-configuration2</artifactId>
-        </dependency>
-    </dependencies>
+    <!-- Apache Commons -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-configuration2</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -60,12 +60,12 @@ public class RCPropertiesMojo extends AbstractMojo {
      */
     @Parameter
     protected String[] extensions = {
-            ".rc.json",
-            ".rc.xml",
-            ".rc.yml",
-            ".rc.yaml",
-            ".rc.ini",
-            ".rc.properties",
+        ".rc.json",
+        ".rc.xml",
+        ".rc.yml",
+        ".rc.yaml",
+        ".rc.ini",
+        ".rc.properties",
     };
 
     /**
@@ -75,8 +75,8 @@ public class RCPropertiesMojo extends AbstractMojo {
      */
     @Parameter
     protected PropertyFileSet[] sources = {
-            PropertyFileSet.files("env", "rc/env"),
-            PropertyFileSet.files("default", "rc/default"),
+        PropertyFileSet.files("env", "rc/env"),
+        PropertyFileSet.files("default", "rc/default"),
     };
 
     /**
@@ -85,7 +85,7 @@ public class RCPropertiesMojo extends AbstractMojo {
      */
     @Parameter
     protected OutputFiles[] outputs = {
-            OutputFiles.files("${project.build.directory}/rc.properties")
+        OutputFiles.files("${project.build.directory}/rc.properties")
     };
 
     /** List of containers where to inject accumulated properties. */

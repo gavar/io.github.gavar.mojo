@@ -27,7 +27,7 @@ public class UpperEnumConverter extends AbstractConfigurationConverter {
                                     ExpressionEvaluator evaluator, ConfigurationListener listener) throws ComponentConfigurationException {
         if (configuration.getChildCount() > 0)
             throw new ComponentConfigurationException("Basic element '" + configuration.getName()
-                    + "' must not contain child elements");
+                + "' must not contain child elements");
 
         Object value = fromExpression(configuration, evaluator);
         if (value instanceof String)

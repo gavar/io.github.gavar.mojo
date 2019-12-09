@@ -80,8 +80,8 @@ public class ReleaseProject {
 
     public String getReleaseTag() {
         return shouldSkipTag()
-                ? defaultString(latestTagName, mavenProject.getScm().getTag())
-                : tagNameFor(nextRelVersion);
+            ? defaultString(latestTagName, mavenProject.getScm().getTag())
+            : tagNameFor(nextRelVersion);
     }
 
     public void setTagRefs(List<Ref> tagRefs) {
@@ -158,15 +158,15 @@ public class ReleaseProject {
 
     private Version resolveNextRelVersion() {
         return isDeploySkip() ? normalVersionOf(getVersion())
-                : tagRefs.isEmpty() ? versionOf("0.0.1")
-                : hasChanges ? lastReleaseVersion.incrementPatchVersion()
-                : lastReleaseVersion;
+            : tagRefs.isEmpty() ? versionOf("0.0.1")
+            : hasChanges ? lastReleaseVersion.incrementPatchVersion()
+            : lastReleaseVersion;
     }
 
     private Version resolveNextDevVersion() {
         final Version version = this.isDeploySkip() || this.isPristine()
-                ? versionOf(getVersion())
-                : nextRelVersion;
+            ? versionOf(getVersion())
+            : nextRelVersion;
 
         return version.setPreReleaseVersion("SNAPSHOT");
     }
@@ -197,13 +197,13 @@ public class ReleaseProject {
 
     static String patch(String version) {
         return Version.valueOf(version)
-                .incrementPatchVersion()
-                .toString();
+            .incrementPatchVersion()
+            .toString();
     }
 
     static TreeFilter group(Collection<PathFilter> paths) {
         return paths == null || paths.isEmpty() ? null
-                : PathFilterGroup.create(paths);
+            : PathFilterGroup.create(paths);
     }
 
     static TreeFilter not(TreeFilter filter) {
@@ -235,7 +235,7 @@ public class ReleaseProject {
     static PathFilter toPathFilter(Path path) {
         final String s = path.toString();
         return s != null && s.length() > 0
-                ? PathFilter.create(s)
-                : null;
+            ? PathFilter.create(s)
+            : null;
     }
 }
