@@ -59,15 +59,20 @@ public class TagProjectsPhase extends AbstractSemanticPhase {
         final ScmRepository repository = getScmRepository(descriptor, environment, root.getPath());
         final ScmProvider provider = getScmProvider(repository);
 
+        // reset SCM release label,
+        // will be updated to any tag of projects below
+        descriptor.setScmReleaseLabel(null);
+
         for (MavenProject mavenProject : mavenProjects) {
             final String key = versionlessKey(mavenProject);
             final Map releaseVersions = descriptor.getReleaseVersions();
             final String tagName = Objects.toString(releaseVersions.get(key + ".tag"), mavenProject.getScm().getTag());
-            final boolean skipTag = parseBoolean(Objects.toString(releaseVersions.get(key + ".tag.skip"), "false"));
+            final boolean skipTag = tagName == null || parseBoolean(Objects.toString(releaseVersions.get(key + ".tag.skip")));
 
-            if (skipTag || tagName == null) {
+            if (skipTag) {
                 logInfo(result, "Skipping tag for project: " + key);
             } else if (simulate) {
+                descriptor.setScmReleaseLabel(tagName);
                 logInfo(result, "Full run would create tag: " + tagName);
             } else {
                 final ScmFileSet fileSet = new ScmFileSet(root);
@@ -75,8 +80,12 @@ public class TagProjectsPhase extends AbstractSemanticPhase {
                 scmTagParameters.setRemoteTagging(descriptor.isRemoteTagging());
                 scmTagParameters.setScmRevision(descriptor.getScmReleasedPomRevision());
                 final TagScmResult tag = provider.tag(repository, fileSet, tagName, scmTagParameters);
-                if (tag.isSuccess()) logInfo(result, "Tag created: " + tagName);
-                else logError(result, tag.getProviderMessage());
+                if (tag.isSuccess()) {
+                    descriptor.setScmReleaseLabel(tagName);
+                    logInfo(result, "Tag created: " + tagName);
+                } else {
+                    logError(result, tag.getProviderMessage());
+                }
             }
         }
 
