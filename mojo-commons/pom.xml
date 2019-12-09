@@ -17,7 +17,6 @@
 
   <scm>
     <tag>HEAD</tag>
-    <url>${scm.url.base}/${project.scm.tag}</url>
   </scm>
 
   <dependencies>

@@ -23,7 +23,6 @@
 
     <!-- deploy config -->
     <maven.deploy.skip>true</maven.deploy.skip>
-    <scm.url.base>https://github.com/gavar/dev.gavar.mojo/tree</scm.url.base>
 
     <!-- variables -->
     <dryRun>false</dryRun>
@@ -55,7 +54,7 @@
 
   <scm>
     <tag>HEAD</tag>
-    <url>${scm.url.base}/${project.scm.tag}</url>
+    <url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</url>
     <connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</connection>
     <developerConnection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</developerConnection>
   </scm>
@@ -76,7 +75,7 @@
         <repository>
           <id>github</id>
           <name>GitHub Apache Maven Packages</name>
-          <url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</url>
+          <url>${project.scm.url}</url>
         </repository>
       </distributionManagement>
     </profile>
@@ -270,12 +269,12 @@
           <artifactId>semantic-release-maven-plugin</artifactId>
           <version>0.0.1-SNAPSHOT</version>
           <configuration>
-            <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun}</arguments>
+            <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun} -Dmaven.wagon.http.pool=false</arguments>
             <autoVersionSubmodules>false</autoVersionSubmodules>
             <localCheckout>true</localCheckout>
             <pushChanges>true</pushChanges>
             <releaseProfiles>github</releaseProfiles>
-            <remoteTagging>true</remoteTagging>
+            <remoteTagging>false</remoteTagging>
             <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
             <tag>latest</tag>
             <useReleaseProfile>true</useReleaseProfile>
