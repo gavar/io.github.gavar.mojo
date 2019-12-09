@@ -19,6 +19,7 @@ public class BranchReleaseMojo extends org.apache.maven.plugins.release.BranchRe
             // TODO: allow to branch on detached head
             final List<String> phases = phasesOf(releaseManager, "branchPhases");
             addBefore(phases, "map-branch-versions", "resolve-semantic-versions");
+            replace(phases, "rewrite-poms-for-branch", "rewrite-poms-for-semantic-branch");
             // addBefore(phases, "scm-commit-branch", "git-detach");  // work on detached head
             replace(phases, "scm-branch", "scm-tag-projects"); // tag each project
             // addAfter(phases, "scm-commit-branch", "git-attach"); // back to master branch

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component-set>
+  <components>
+    <component>
+      <role>org.apache.maven.shared.release.phase.ReleasePhase</role>
+      <role-hint>rewrite-poms-for-semantic-release</role-hint>
+      <implementation>dev.gavar.mojo.release.phase.RewritePomsForSemanticReleasePhase</implementation>
+      <configuration>
+        <pomSuffix>tag</pomSuffix>
+      </configuration>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.shared.release.scm.ScmRepositoryConfigurator</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.shared.release.scm.ScmTranslator</role>
+          <field-name>scmTranslators</field-name>
+        </requirement>
+      </requirements>
+    </component>
+    <component>
+      <role>org.apache.maven.shared.release.phase.ReleasePhase</role>
+      <role-hint>rewrite-poms-for-semantic-branch</role-hint>
+      <implementation>dev.gavar.mojo.release.phase.RewritePomsForSemanticBranchPhase</implementation>
+      <configuration>
+        <pomSuffix>branch</pomSuffix>
+      </configuration>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.shared.release.scm.ScmRepositoryConfigurator</role>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.shared.release.scm.ScmTranslator</role>
+          <field-name>scmTranslators</field-name>
+        </requirement>
+      </requirements>
+    </component>
+  </components>
+</component-set>
