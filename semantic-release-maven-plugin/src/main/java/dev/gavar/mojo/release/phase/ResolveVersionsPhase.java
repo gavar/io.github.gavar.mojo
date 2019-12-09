@@ -48,6 +48,10 @@ public class ResolveVersionsPhase extends AbstractSemanticPhase {
         final Repository repository = git.getRepository();
         final RevWalk walk = new RevWalk(repository);
 
+        // each project has its own release label
+        // using fake tag to generate message: '${prefix}: prepare release versions
+        descriptor.setScmReleaseLabel("versions");
+
         // analyze projects
         for (MavenProject project : reactorProjects) {
             final String key = versionlessKey(project);
