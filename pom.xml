@@ -21,7 +21,9 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!-- deploy config -->
+    <!-- SCM config -->
+    <deploy.url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</deploy.url>
+    <git.connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</git.connection>
     <maven.deploy.skip>true</maven.deploy.skip>
 
     <!-- variables -->
@@ -54,9 +56,8 @@
 
   <scm>
     <tag>HEAD</tag>
-    <url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</url>
-    <connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</connection>
-    <developerConnection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</developerConnection>
+    <url>${deploy.url}</url>
+    <connection>${git.connection}</connection>
   </scm>
 
   <licenses>
@@ -75,7 +76,7 @@
         <repository>
           <id>github</id>
           <name>GitHub Apache Maven Packages</name>
-          <url>${project.scm.url}</url>
+          <url>${deploy.url}</url>
         </repository>
       </distributionManagement>
       <build>

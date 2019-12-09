@@ -17,6 +17,8 @@
 
   <scm>
     <tag>HEAD</tag>
+    <url>${deploy.url}</url>
+    <connection>${git.connection}</connection>
   </scm>
 
   <dependencies>
