@@ -5,7 +5,7 @@
     <component>
       <role>org.apache.maven.shared.release.phase.ReleasePhase</role>
       <role-hint>rewrite-poms-for-semantic-release</role-hint>
-      <implementation>dev.gavar.mojo.release.phase.RewritePomsForSemanticReleasePhase</implementation>
+      <implementation>io.github.gavar.mojo.release.phase.RewritePomsForSemanticReleasePhase</implementation>
       <configuration>
         <pomSuffix>tag</pomSuffix>
       </configuration>
@@ -22,7 +22,7 @@
     <component>
       <role>org.apache.maven.shared.release.phase.ReleasePhase</role>
       <role-hint>rewrite-poms-for-semantic-branch</role-hint>
-      <implementation>dev.gavar.mojo.release.phase.RewritePomsForSemanticBranchPhase</implementation>
+      <implementation>io.github.gavar.mojo.release.phase.RewritePomsForSemanticBranchPhase</implementation>
       <configuration>
         <pomSuffix>branch</pomSuffix>
       </configuration>
