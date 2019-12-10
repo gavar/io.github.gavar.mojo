@@ -288,6 +288,7 @@
           <configuration>
             <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun} -Dmaven.wagon.http.pool=false</arguments>
             <autoVersionSubmodules>false</autoVersionSubmodules>
+            <goals>semantic-release:deploy</goals>
             <localCheckout>true</localCheckout>
             <pushChanges>true</pushChanges>
             <releaseProfiles>github</releaseProfiles>
