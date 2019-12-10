@@ -90,7 +90,7 @@ public class ResolveVersionsPhase extends AbstractSemanticPhase {
             }
 
             final boolean skip = release.shouldSkip(relVersion);
-            final Version devVersion = release.resolveDevVersion(relVersion);
+            final Version devVersion = release.resolveDevVersion(relVersion, skip);
             final String releaseTag = release.getReleaseTag(relVersion);
 
             descriptor.addReleaseVersion(key, relVersion.toString());

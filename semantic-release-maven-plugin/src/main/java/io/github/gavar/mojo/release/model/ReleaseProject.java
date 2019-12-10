@@ -168,11 +168,12 @@ public class ReleaseProject {
             : lastReleaseVersion.incrementPatchVersion();
     }
 
-    public Version resolveDevVersion(String releaseVersion) {
-        return resolveDevVersion(versionOf(releaseVersion));
+    public Version resolveDevVersion(String releaseVersion, boolean skip) {
+        return resolveDevVersion(versionOf(releaseVersion), skip);
     }
 
-    public Version resolveDevVersion(Version releaseVersion) {
+    public Version resolveDevVersion(Version releaseVersion, boolean skip) {
+        if (!skip) releaseVersion = releaseVersion.incrementPatchVersion();
         return releaseVersion.setPreReleaseVersion("SNAPSHOT");
     }
 

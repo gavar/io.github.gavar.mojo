@@ -45,7 +45,8 @@ public class ReleaseProperties {
     public void write(ReleaseProject release) {
         final String key = keyOf(release.getMavenProject());
         final Version relVersion = release.resolveRelVersion();
-        final Version devVersion = release.resolveDevVersion(relVersion);
+        final boolean skip = release.shouldSkip(relVersion);
+        final Version devVersion = release.resolveDevVersion(relVersion, skip);
         final String nextRelTag = release.getReleaseTag(relVersion);
 
         write("project.rel." + key, relVersion);
