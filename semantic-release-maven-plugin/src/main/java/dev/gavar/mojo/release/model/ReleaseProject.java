@@ -30,6 +30,9 @@ import static org.eclipse.jgit.lib.Constants.R_TAGS;
 
 public class ReleaseProject {
 
+    static final Version ZERO_VERSION = Version.valueOf("0.0.0");
+    static final Version FIRST_VERSION = Version.valueOf("0.0.1");
+
     private final TreeFilter treeFilter;
 
     private final MavenProject mavenProject;
@@ -65,23 +68,21 @@ public class ReleaseProject {
         return lastReleaseVersion;
     }
 
-    private Version nextRelVersion;
-    public Version getNextRelVersion() {
-        return nextRelVersion;
-    }
-
-    private Version nextDevVersion;
-    public Version getNextDevVersion() {
-        return nextDevVersion;
-    }
-
     private List<Ref> tagRefs = List.of();
     public List<Ref> getTagRefs() { return tagRefs; }
 
-    public String getReleaseTag() {
-        return shouldSkipTag()
+    public boolean isNew() {
+        return tagRefs.size() == 0;
+    }
+
+    public String getReleaseTag(String version) {
+        return getReleaseTag(versionOf(version));
+    }
+
+    public String getReleaseTag(Version version) {
+        return shouldSkip(version)
             ? defaultString(latestTagName, mavenProject.getScm().getTag())
-            : tagNameFor(nextRelVersion);
+            : tagNameFor(version);
     }
 
     public void setTagRefs(List<Ref> tagRefs) {
@@ -112,8 +113,18 @@ public class ReleaseProject {
         return this.config.isSkipDeploy();
     }
 
-    public boolean shouldSkipTag() {
-        return this.isDeploySkip() || this.isPristine();
+    public boolean shouldSkip(String version) {
+        return shouldSkip(versionOf(version));
+    }
+
+    public boolean shouldSkip(Version version) {
+        if (version.lessThan(FIRST_VERSION))
+            return true;
+
+        if (lastReleaseVersion != null && version.lessThanOrEqualTo(lastReleaseVersion))
+            return true;
+
+        return false;
     }
 
     public String tagNameFor(Version version) {
@@ -131,7 +142,6 @@ public class ReleaseProject {
 
         analyzeTags(git);
         analyzeChanges(walk, head);
-        resolveVersions();
         return this;
     }
 
@@ -151,24 +161,19 @@ public class ReleaseProject {
         }
     }
 
-    private void resolveVersions() {
-        nextRelVersion = resolveNextRelVersion();
-        nextDevVersion = resolveNextDevVersion();
-    }
-
-    private Version resolveNextRelVersion() {
+    public Version resolveRelVersion() {
         return isDeploySkip() ? normalVersionOf(getVersion())
-            : tagRefs.isEmpty() ? versionOf("0.0.1")
-            : hasChanges ? lastReleaseVersion.incrementPatchVersion()
-            : lastReleaseVersion;
+            : isNew() ? FIRST_VERSION
+            : isPristine() ? lastReleaseVersion
+            : lastReleaseVersion.incrementPatchVersion();
     }
 
-    private Version resolveNextDevVersion() {
-        final Version version = this.isDeploySkip() || this.isPristine()
-            ? versionOf(getVersion())
-            : nextRelVersion;
+    public Version resolveDevVersion(String releaseVersion) {
+        return resolveDevVersion(versionOf(releaseVersion));
+    }
 
-        return version.setPreReleaseVersion("SNAPSHOT");
+    public Version resolveDevVersion(Version releaseVersion) {
+        return releaseVersion.setPreReleaseVersion("SNAPSHOT");
     }
 
     private static TreeFilter createChangesFiler(final File root, final MavenProject mavenProject) {

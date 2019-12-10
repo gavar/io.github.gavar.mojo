@@ -67,9 +67,9 @@ public class TagProjectsPhase extends AbstractSemanticPhase {
             final String key = versionlessKey(mavenProject);
             final Map releaseVersions = descriptor.getReleaseVersions();
             final String tagName = Objects.toString(releaseVersions.get(key + ".tag"), mavenProject.getScm().getTag());
-            final boolean skipTag = tagName == null || parseBoolean(Objects.toString(releaseVersions.get(key + ".tag.skip")));
+            final boolean skip = tagName == null || parseBoolean(Objects.toString(releaseVersions.get(key + ".skip")));
 
-            if (skipTag) {
+            if (skip) {
                 logInfo(result, "Skipping tag for project: " + key);
             } else if (simulate) {
                 descriptor.setScmReleaseLabel(tagName);

@@ -44,12 +44,12 @@ public class ReleaseProperties {
 
     public void write(ReleaseProject release) {
         final String key = keyOf(release.getMavenProject());
-        final String nextRelTag = release.getReleaseTag();
-        final Version nextRelVersion = release.getNextRelVersion();
-        final Version nextDevVersion = release.getNextDevVersion();
+        final Version relVersion = release.resolveRelVersion();
+        final Version devVersion = release.resolveDevVersion(relVersion);
+        final String nextRelTag = release.getReleaseTag(relVersion);
 
-        write("project.rel." + key, nextRelVersion);
-        write("project.dev." + key, nextDevVersion);
+        write("project.rel." + key, relVersion);
+        write("project.dev." + key, devVersion);
         write("project.scm." + key + ".tag", nextRelTag);
     }
 
