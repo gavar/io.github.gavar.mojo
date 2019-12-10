@@ -65,7 +65,7 @@ public class DeployMojo extends AbstractMojo {
 
     /**
      * Specifies an alternative repository to which the project artifacts should be deployed ( other than those
-     * specified in &lt;distributionManagement&gt; ). <br/>
+     * specified in &lt;distributionManagement&gt; ).<br>
      * Format: id::layout::url
      * <dl>
      * <dt>id</dt>
