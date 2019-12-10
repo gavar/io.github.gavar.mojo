@@ -290,6 +290,7 @@
             <autoVersionSubmodules>false</autoVersionSubmodules>
             <goals>semantic-release:deploy</goals>
             <localCheckout>true</localCheckout>
+            <preparationGoals>clean verify javadoc:javadoc</preparationGoals>
             <pushChanges>true</pushChanges>
             <releaseProfiles>github</releaseProfiles>
             <remoteTagging>false</remoteTagging>
