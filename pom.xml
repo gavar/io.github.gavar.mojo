@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>dev.gavar.mojo</groupId>
+  <groupId>io.github.gavar.mojo</groupId>
   <artifactId>mojo-parent</artifactId>
   <version>0.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -22,8 +22,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- SCM config -->
-    <deploy.url>https://maven.pkg.github.com/gavar/dev.gavar.mojo</deploy.url>
-    <git.connection>scm:git:https://github.com/gavar/dev.gavar.mojo.git</git.connection>
+    <deploy.url>https://maven.pkg.github.com/gavar/io.github.gavar.mojo</deploy.url>
+    <git.connection>scm:git:https://github.com/gavar/io.github.gavar.mojo.git</git.connection>
     <maven.deploy.skip>true</maven.deploy.skip>
 
     <!-- variables -->
