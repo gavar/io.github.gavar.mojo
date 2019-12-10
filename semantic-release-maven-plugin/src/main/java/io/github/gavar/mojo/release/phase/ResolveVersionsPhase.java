@@ -78,12 +78,12 @@ public class ResolveVersionsPhase extends AbstractSemanticPhase {
                         relVersion = Version.valueOf(input);
                     } catch (ParseException e) {
                         relVersion = null;
-                        prompter.showMessage("invalid version format, should be a semantic version: x.x.x\n");
+                        prompter.showMessage("invalid version format, should be a SemVer: x.x.x\n");
                     }
                 }
 
                 if (release.shouldSkip(relVersion))
-                    prompter.showMessage(MessageFormat.format("\"{0}\" will not be skipped\n", project.getName()));
+                    prompter.showMessage(MessageFormat.format("\"{0}\" will be skipped\n", project.getName()));
 
             } else {
                 relVersion = suggestVersion;
