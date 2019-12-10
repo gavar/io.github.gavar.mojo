@@ -7,12 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="jooq-liquibase-maven-plugin" />
-        <module name="mojo-commons" />
         <module name="semantic-release-maven-plugin" />
+        <module name="mojo-commons" />
         <module name="rc-maven-plugin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="io.github.gavar.mojo" target="12" />
       <module name="jooq-liquibase-maven-plugin" target="12" />
       <module name="mojo-commons" target="12" />
       <module name="rc-maven-plugin" target="12" />
