@@ -45,14 +45,19 @@ public class RewritePomForReleaseUtils {
         final Namespace ns = root.getNamespace();
         Element properties = root.getChild("properties", ns);
         if (properties == null) {
-            properties = new Element("properties", ns);
-            root.addContent(properties);
+            properties = new Element("properties", ns)
+                .addContent("\n  ");
+
+            root.addContent("\n  ")
+                .addContent(properties);
         }
 
         Element property = properties.getChild(name, ns);
         if (property == null) {
             property = new Element(name, ns);
-            properties.addContent(property);
+            properties.addContent("  ")
+                .addContent(property)
+                .addContent("\n  ");
         }
 
         property.setText(value);
