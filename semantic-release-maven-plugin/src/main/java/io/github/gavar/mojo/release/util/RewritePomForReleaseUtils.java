@@ -26,7 +26,10 @@ public class RewritePomForReleaseUtils {
             // mark projects that should not be deployed
             setProjectProperty(root, MAVEN_DEPLOY_SKIP, skip);
             // do not run tests when deploy skipped for quick deploys
-            if (skip) setProjectProperty(root, MAVEN_TEST_SKIP, true);
+            if (skip) {
+                setProjectProperty(root, MAVEN_TEST_SKIP, true);
+                setProjectProperty(root, "skipTests", true);
+            }
             procedure.perform();
         } catch (Exception e) {
             throw new ReleaseExecutionException(e.getMessage(), e);
