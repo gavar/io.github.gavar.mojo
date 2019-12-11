@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static io.github.gavar.mojo.release.Constants.MAVEN_DEPLOY_SKIP;
+import static io.github.gavar.mojo.release.Constants.MAVEN_TEST_SKIP;
 import static java.lang.Boolean.parseBoolean;
 
 public class RewritePomForReleaseUtils {
@@ -23,7 +24,9 @@ public class RewritePomForReleaseUtils {
         try {
             descriptor.setScmReleaseLabel(tagName);
             // mark projects that should not be deployed
-            setDeploySkip(root, skip);
+            setProjectProperty(root, MAVEN_DEPLOY_SKIP, skip);
+            // do not run tests when deploy skipped for quick deploys
+            if (skip) setProjectProperty(root, MAVEN_TEST_SKIP, true);
             procedure.perform();
         } catch (Exception e) {
             throw new ReleaseExecutionException(e.getMessage(), e);
@@ -34,20 +37,24 @@ public class RewritePomForReleaseUtils {
         }
     }
 
-    private static void setDeploySkip(final Element project, final boolean value) {
-        final Namespace ns = project.getNamespace();
-        Element properties = project.getChild("properties", ns);
+    private static void setProjectProperty(final Element root, final String name, final boolean value) {
+        setProjectProperty(root, name, Boolean.toString(value));
+    }
+
+    private static void setProjectProperty(final Element root, final String name, final String value) {
+        final Namespace ns = root.getNamespace();
+        Element properties = root.getChild("properties", ns);
         if (properties == null) {
             properties = new Element("properties", ns);
-            project.addContent(properties);
+            root.addContent(properties);
         }
 
-        Element property = properties.getChild(MAVEN_DEPLOY_SKIP, ns);
+        Element property = properties.getChild(name, ns);
         if (property == null) {
-            property = new Element(MAVEN_DEPLOY_SKIP, ns);
+            property = new Element(name, ns);
             properties.addContent(property);
         }
 
-        property.setText(Boolean.toString(value));
+        property.setText(value);
     }
 }
