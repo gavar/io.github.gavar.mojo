@@ -8,6 +8,6 @@
   "private": true,
   "scripts": {
     "stage": "mvn semantic-release:stage -Dresume=false",
-    "deploy": "mvn semantic-release:deploy"
+    "deploy": "mvn install -DskipTests && mvn semantic-release:deploy"
   }
 }
