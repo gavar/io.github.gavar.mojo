@@ -24,6 +24,8 @@
     <!-- SCM config -->
     <deploy.url>https://maven.pkg.github.com/gavar/io.github.gavar.mojo</deploy.url>
     <git.connection>scm:git:https://github.com/gavar/io.github.gavar.mojo.git</git.connection>
+    <scm.push-changes>false</scm.push-changes>
+    <scm.remote-tagging>false</scm.remote-tagging>
     <maven.deploy.skip>true</maven.deploy.skip>
 
     <!-- variables -->
@@ -46,6 +48,7 @@
     <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
     <maven-invoker.version>3.2.1</maven-invoker.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+    <maven-scm-plugin.version>1.11.2</maven-scm-plugin.version>
     <maven-surefire.version>2.22.2</maven-surefire.version>
     <maven.version>3.6.0</maven.version>
     <plexus.version>2.1.0</plexus.version>
@@ -288,14 +291,14 @@
           <configuration>
             <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun} -Dmaven.wagon.http.pool=false</arguments>
             <autoVersionSubmodules>false</autoVersionSubmodules>
-            <goals>semantic-release:deploy</goals>
             <localCheckout>true</localCheckout>
             <preparationGoals>clean verify javadoc:javadoc</preparationGoals>
-            <pushChanges>false</pushChanges>
+            <pushChanges>${scm.push-changes}</pushChanges>
             <releaseProfiles>github</releaseProfiles>
-            <remoteTagging>false</remoteTagging>
+            <remoteTagging>${scm.remote-tagging}</remoteTagging>
             <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
-            <tag>latest</tag>
+            <tag>release/latest</tag>
+            <branchName>release/latest</branchName>
             <useReleaseProfile>true</useReleaseProfile>
             <checkModificationExcludes>
               <checkModificationExclude>.idea/**</checkModificationExclude>
@@ -379,6 +382,18 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
+      </plugin>
+
+      <!-- SCM -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>${maven-scm-plugin.version}</version>
+        <configuration>
+          <tag>${project.scm.tag}</tag>
+          <pushChanges>${scm.push-changes}</pushChanges>
+          <remoteTagging>${scm.remote-tagging}</remoteTagging>
+        </configuration>
       </plugin>
 
       <!-- Enforcer -->
