@@ -3,6 +3,7 @@ package io.github.gavar.mojo.release.mojo;
 import io.github.gavar.mojo.io.HorizontalTable;
 import io.github.gavar.mojo.release.model.ReleaseProject;
 import io.github.gavar.mojo.release.util.GitUtils;
+import io.github.gavar.mojo.release.util.ProjectUtils;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
@@ -12,6 +13,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 
 import java.io.IOException;
 
+import static io.github.gavar.mojo.release.util.ProjectUtils.toReleaseProject;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -30,7 +32,7 @@ public class AnalyzeMojo extends BaseMojo {
         table.header("Name", "Version", "Tag", "Commit", "Deploy", "Release Version", "Dev Version");
 
         for (MavenProject project : session.getAllProjects()) {
-            final ReleaseProject rp = toReleaseProject(project).analyze(git, walk);
+            final ReleaseProject rp = toReleaseProject(project, root).analyze(git, walk);
 
             final String name = rp.getName();
             final String version = rp.getVersion();

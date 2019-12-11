@@ -1,7 +1,7 @@
 package io.github.gavar.mojo.release.mojo;
 
-import io.github.gavar.mojo.release.model.ProjectConfig;
 import io.github.gavar.mojo.release.model.ReleaseProject;
+import io.github.gavar.mojo.release.util.ProjectUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -11,7 +11,6 @@ import org.eclipse.jgit.api.Git;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 import static org.apache.maven.shared.release.util.ReleaseUtil.getCommonBasedir;
 
@@ -44,17 +43,5 @@ public abstract class BaseMojo extends AbstractMojo {
 
     protected Git git() throws IOException {
         return Git.open(root);
-    }
-
-    protected ReleaseProject toReleaseProject(MavenProject project) {
-        final Properties props = new Properties();
-        // defaults
-        props.put(ProjectConfig.SCM_TAG_PREFIX, "v/" + project.getArtifactId() + "/");
-
-        // per-project configuration
-        props.putAll(project.getProperties());
-
-        final ProjectConfig config = new ProjectConfig(props);
-        return new ReleaseProject(root, project, config);
     }
 }

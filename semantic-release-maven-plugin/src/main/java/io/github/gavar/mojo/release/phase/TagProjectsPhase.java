@@ -24,7 +24,7 @@ import static io.github.gavar.mojo.release.util.ProjectUtils.versionlessKey;
 import static java.lang.Boolean.parseBoolean;
 
 @Component(role = ReleasePhase.class, hint = "scm-tag-projects")
-public class TagProjectsPhase extends AbstractSemanticPhase {
+public class TagProjectsPhase extends AbstractScmPhase {
 
     @Override
     public ReleaseResult execute(final ReleaseDescriptor descriptor,

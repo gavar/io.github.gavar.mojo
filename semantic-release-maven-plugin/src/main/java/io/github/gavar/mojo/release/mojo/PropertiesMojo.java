@@ -10,6 +10,8 @@ import org.eclipse.jgit.revwalk.RevWalk;
 
 import java.io.File;
 
+import static io.github.gavar.mojo.release.util.ProjectUtils.toReleaseProject;
+
 @Mojo(name = "properties", requiresDirectInvocation = true, aggregator = true)
 public class PropertiesMojo extends BaseMojo {
 
@@ -24,7 +26,7 @@ public class PropertiesMojo extends BaseMojo {
 
         // analyze projects
         for (MavenProject project : session.getAllProjects()) {
-            final ReleaseProject release = toReleaseProject(project).analyze(git, walk);
+            final ReleaseProject release = toReleaseProject(project, root).analyze(git, walk);
             properties.write(release.analyze(git, walk));
         }
 

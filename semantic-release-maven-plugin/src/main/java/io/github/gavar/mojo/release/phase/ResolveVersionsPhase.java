@@ -23,11 +23,12 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
+import static io.github.gavar.mojo.release.util.ProjectUtils.toReleaseProject;
 import static io.github.gavar.mojo.release.util.ProjectUtils.versionlessKey;
 import static org.apache.maven.shared.release.ReleaseResult.SUCCESS;
 
 @Component(role = ReleasePhase.class, hint = "resolve-semantic-versions")
-public class ResolveVersionsPhase extends AbstractSemanticPhase {
+public class ResolveVersionsPhase extends AbstractScmPhase {
 
     @Requirement(role = Prompter.class, hint = "default")
     protected Prompter prompter;
