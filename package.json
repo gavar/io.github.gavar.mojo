@@ -7,8 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "release:prepare": "mvn semantic-release:prepare -Dresume=false",
-    "release:perform": "mvn semantic-release:perform",
-    "deploy": "mvn semantic-release:deploy -P github -fae"
+    "stage": "mvn semantic-release:stage -Dresume=false",
+    "deploy": "mvn semantic-release:deploy"
   }
 }
