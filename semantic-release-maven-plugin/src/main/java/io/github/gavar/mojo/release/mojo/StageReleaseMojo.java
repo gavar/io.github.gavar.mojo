@@ -20,7 +20,7 @@ public class StageReleaseMojo extends org.apache.maven.plugins.release.BranchRel
             phases.add("create-backup-poms");
             phases.add("resolve-semantic-versions");
             phases.add("git-detach");
-            phases.add("rewrite-poms-for-branch");
+            phases.add("rewrite-poms-for-semantic-branch");
             phases.add("scm-commit-branch");
             phases.add("end-release");
             super.execute();
