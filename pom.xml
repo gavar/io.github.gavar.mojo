@@ -291,7 +291,7 @@
             <goals>semantic-release:deploy</goals>
             <localCheckout>true</localCheckout>
             <preparationGoals>clean verify javadoc:javadoc</preparationGoals>
-            <pushChanges>true</pushChanges>
+            <pushChanges>false</pushChanges>
             <releaseProfiles>github</releaseProfiles>
             <remoteTagging>false</remoteTagging>
             <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
@@ -299,6 +299,8 @@
             <useReleaseProfile>true</useReleaseProfile>
             <checkModificationExcludes>
               <checkModificationExclude>.idea/**</checkModificationExclude>
+              <checkModificationExclude>**/pom.xml</checkModificationExclude>
+              <checkModificationExclude>**/*.java</checkModificationExclude>
             </checkModificationExcludes>
           </configuration>
         </plugin>
