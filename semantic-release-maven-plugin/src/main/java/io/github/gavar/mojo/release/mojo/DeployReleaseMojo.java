@@ -15,7 +15,6 @@ public class DeployReleaseMojo extends org.apache.maven.plugins.release.PerformR
         try {
             final List<String> phases = ReflectionUtils.phasesOf(releaseManager, "performPhases");
             phases.clear();
-            phases.add("set-project-list");
             phases.add("run-perform-goals");
             super.execute();
         } catch (ReflectiveOperationException e) {
