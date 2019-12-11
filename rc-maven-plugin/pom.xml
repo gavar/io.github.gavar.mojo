@@ -4,16 +4,16 @@
   <parent>
     <groupId>io.github.gavar.mojo</groupId>
     <artifactId>mojo-parent</artifactId>
-    <version>0.0.0-SNAPSHOT</version>
+    <version>0.0.0</version>
     <relativePath>..</relativePath>
   </parent>
 
   <artifactId>rc-maven-plugin</artifactId>
-  <version>0.0.0-SNAPSHOT</version>
+  <version>0.0.3</version>
   <packaging>maven-plugin</packaging>
 
   <properties>
-    <maven.deploy.skip>false</maven.deploy.skip>
+    <maven.deploy.skip>true</maven.deploy.skip>
   </properties>
 
   <prerequisites>
@@ -21,7 +21,7 @@
   </prerequisites>
 
   <scm>
-    <tag>HEAD</tag>
+    <tag>v/rc-maven-plugin/0.0.3</tag>
     <url>${deploy.url}</url>
     <connection>${git.connection}</connection>
   </scm>
