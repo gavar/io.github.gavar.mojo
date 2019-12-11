@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.gavar.mojo</groupId>
@@ -289,12 +291,13 @@
           <artifactId>semantic-release-maven-plugin</artifactId>
           <version>0.0.1-SNAPSHOT</version>
           <configuration>
-            <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun} -Dmaven.wagon.http.pool=false</arguments>
+            <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun} -Dmaven.wagon.http.pool=false -fae</arguments>
             <autoVersionSubmodules>false</autoVersionSubmodules>
             <localCheckout>true</localCheckout>
-            <goals>deploy scm:tag</goals>
+            <goals>deploy semantic-release:tag</goals>
             <preparationGoals>clean verify javadoc:javadoc</preparationGoals>
             <pushChanges>${scm.push-changes}</pushChanges>
+            <workingDirectory>${project.basedir}</workingDirectory>
             <releaseProfiles>github</releaseProfiles>
             <remoteTagging>${scm.remote-tagging}</remoteTagging>
             <scmCommentPrefix xml:space="preserve">chore(release): </scmCommentPrefix>
@@ -303,8 +306,6 @@
             <useReleaseProfile>true</useReleaseProfile>
             <checkModificationExcludes>
               <checkModificationExclude>.idea/**</checkModificationExclude>
-              <checkModificationExclude>**/pom.xml</checkModificationExclude>
-              <checkModificationExclude>**/*.java</checkModificationExclude>
             </checkModificationExcludes>
           </configuration>
         </plugin>
