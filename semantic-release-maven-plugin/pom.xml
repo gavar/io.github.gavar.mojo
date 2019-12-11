@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>semantic-release-maven-plugin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <properties>
