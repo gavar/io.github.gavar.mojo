@@ -292,6 +292,7 @@
             <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun} -Dmaven.wagon.http.pool=false</arguments>
             <autoVersionSubmodules>false</autoVersionSubmodules>
             <localCheckout>true</localCheckout>
+            <goals>deploy scm:tag</goals>
             <preparationGoals>clean verify javadoc:javadoc</preparationGoals>
             <pushChanges>${scm.push-changes}</pushChanges>
             <releaseProfiles>github</releaseProfiles>
