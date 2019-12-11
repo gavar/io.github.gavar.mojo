@@ -291,7 +291,7 @@
           <artifactId>semantic-release-maven-plugin</artifactId>
           <version>0.0.0-SNAPSHOT</version>
           <configuration>
-            <arguments>-DskipTests=${skipTests} -DdryRun=${dryRun} -Dmaven.wagon.http.pool=false -fae</arguments>
+            <arguments>-Dmaven.wagon.http.pool=false -fae</arguments>
             <autoVersionSubmodules>false</autoVersionSubmodules>
             <localCheckout>true</localCheckout>
             <goals>deploy semantic-release:tag</goals>

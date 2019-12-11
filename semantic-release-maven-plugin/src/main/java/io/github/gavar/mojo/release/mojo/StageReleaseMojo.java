@@ -4,8 +4,11 @@ import io.github.gavar.mojo.release.util.ReflectionUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.shared.release.config.ReleaseDescriptor;
 
 import java.util.List;
+
+import static io.github.gavar.mojo.release.util.ReleaseMojoUtils.initializeDescriptorArguments;
 
 @Mojo(name = "stage", aggregator = true, requiresProject = false)
 public class StageReleaseMojo extends org.apache.maven.plugins.release.BranchReleaseMojo {
@@ -31,5 +34,12 @@ public class StageReleaseMojo extends org.apache.maven.plugins.release.BranchRel
             getLog().error(e);
             throw e;
         }
+    }
+
+    @Override
+    protected ReleaseDescriptor createReleaseDescriptor() {
+        final ReleaseDescriptor descriptor = super.createReleaseDescriptor();
+        initializeDescriptorArguments(descriptor, session);
+        return descriptor;
     }
 }
