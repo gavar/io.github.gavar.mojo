@@ -54,7 +54,7 @@
     <maven-surefire.version>2.22.2</maven-surefire.version>
     <maven.version>3.6.0</maven.version>
     <plexus.version>2.1.0</plexus.version>
-    <snakeyaml.version>1.25</snakeyaml.version>
+    <snakeyaml.version>1.31</snakeyaml.version>
     <testcontainers.version>1.12.3</testcontainers.version>
     <versions-maven-plugin.version>2.7</versions-maven-plugin.version>
   </properties>
